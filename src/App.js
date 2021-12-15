@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import './App.css';
 import LoginPage from './components/LoginPage';
 import { createTheme, ThemeProvider } from "@mui/material/styles"
+import TaskPage from './components/TaskPage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -43,7 +44,7 @@ function App() {
 
   return (
     <div className="App">
-      Welcome {currentUser.username}!
+      <TaskPage />
     </div>
   );
 }
