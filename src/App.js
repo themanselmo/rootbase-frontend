@@ -1,8 +1,10 @@
 import { useEffect, useState } from 'react';
+import { Routes, Route } from 'react-router-dom';
 import './App.css';
 import LoginPage from './components/LoginPage';
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import TaskPage from './components/TaskPage';
+import EmployeeLoginPage from './components/EmployeeLoginPage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -28,6 +30,7 @@ function App() {
       if(res.ok) {
         res.json().then((user) => {
           setCurrentUser(user)
+          console.log(user)
         })
       }
       else {
@@ -36,7 +39,7 @@ function App() {
     })
   }, [])
 
-  const handleLoginWorker = () => {
+  const handleLoginEmployee = () => {
 
   }
 
@@ -50,7 +53,10 @@ function App() {
 
   return (
     <div className="App">
-      <TaskPage currentUser={currentUser} currentWorker={currentWorker}/>
+      <Routes>
+        <Route path="/" element={<TaskPage  currentUser={currentUser} currentWorker={currentWorker} />} />
+        <Route path="/EmployeeLogin" element={<EmployeeLoginPage currentUser={currentUser} handleLoginEmployee={handleLoginEmployee} />} />
+      </Routes>
     </div>
   );
 }
