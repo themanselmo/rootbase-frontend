@@ -1,8 +1,11 @@
 import SideNav from "./SideNav"
 import TopNav from "./TopNav"
 import Button from "@mui/material/Button"
+import { useEffect, useState } from "react"
 
-const TaskPage = ({ currentUser, currentWorker, tasks }) => {
+const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
+
+    const [tasks, setTasks] = useState([])
 
     const listTasks = (tasks) => tasks.map((task) => <div className="task-card">
         <p>{task.name}</p>
@@ -10,11 +13,20 @@ const TaskPage = ({ currentUser, currentWorker, tasks }) => {
         <p>{task.due_date}</p>
     </div>)
 
+    useEffect(()=>{
+        fetch("/me")
+        .then(r => r.json())
+        .then(data => setTasks(data.tasks))
+    }, [])
+    
     return (
         <div id="task-page">
             <SideNav />
             <div id="task-page-content">
-                <TopNav currentUser={currentUser} currentWorker={currentWorker}/>
+                <TopNav currentUser={currentUser} 
+                    currentWorker={currentWorker} 
+                    setCurrentWorker={setCurrentWorker}
+                />
                 <div id="task-list-content">
                     <div id="task-buttons">
                         <Button>All Tasks</Button>

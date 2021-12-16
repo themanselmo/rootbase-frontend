@@ -65,8 +65,8 @@
 
 #side-nav {
   display:flex;
-
-  justify-content: center;
+  flex-direction: column;
+  align-items: center;
   background-color: #4E5256;
   width: 10em;
   /* height: 100vh; */
@@ -76,6 +76,15 @@
   padding-top: 1em;
   width: 7em;
   height: 7em;
+}
+
+.side-nav-card {
+  margin-top: 2em;
+  text-align: center;
+  width:9em;
+  height:10em;
+  background-color:#595d61;
+  border-radius: 10px;
 }
 
 #top-nav {
