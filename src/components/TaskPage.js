@@ -2,8 +2,13 @@ import SideNav from "./SideNav"
 import TopNav from "./TopNav"
 import Button from "@mui/material/Button"
 
-const TaskPage = ({ currentUser, currentWorker }) => {
+const TaskPage = ({ currentUser, currentWorker, tasks }) => {
 
+    const listTasks = (tasks) => tasks.map((task) => <div className="task-card">
+        <p>{task.name}</p>
+        <p>{task.status}</p>
+        <p>{task.due_date}</p>
+    </div>)
 
     return (
         <div id="task-page">
@@ -17,7 +22,7 @@ const TaskPage = ({ currentUser, currentWorker }) => {
                     </div>
                     <div id="tasks">
                         <h1>Current Tasks</h1>
-        
+                            {listTasks(tasks)}
                         <h1>Upcoming Tasks</h1>
 
                         <h1>Completed Tasks</h1>

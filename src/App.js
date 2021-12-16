@@ -9,7 +9,7 @@ import EmployeeLoginPage from './components/EmployeeLoginPage';
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [currentWorker, setCurrentWorker] = useState(null)
-  const [tasks, setTasls] = useState([])
+  const [tasks, setTasks] = useState([])
   
   const theme = createTheme({
         palette: {
@@ -30,6 +30,7 @@ function App() {
       if(res.ok) {
         res.json().then((user) => {
           setCurrentUser(user)
+          setTasks(user.tasks)
           console.log(user)
         })
       }
@@ -54,8 +55,12 @@ function App() {
   return (
     <div className="App">
       <Routes>
-        <Route path="/" element={<TaskPage  currentUser={currentUser} currentWorker={currentWorker} />} />
-        <Route path="/EmployeeLogin" element={<EmployeeLoginPage currentUser={currentUser} handleLoginEmployee={handleLoginEmployee} />} />
+        <Route path="/" element={<TaskPage tasks={tasks} currentUser={currentUser} currentWorker={currentWorker} />} />
+        <Route path="/EmployeeLogin" element={<EmployeeLoginPage 
+          currentUser={currentUser} 
+          handleLoginEmployee={handleLoginEmployee} 
+          
+          />} />
       </Routes>
     </div>
   );
