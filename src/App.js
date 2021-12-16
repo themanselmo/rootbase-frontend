@@ -6,7 +6,9 @@ import TaskPage from './components/TaskPage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
-
+  const [currentWorker, setCurrentWorker] = useState(null)
+  const [tasks, setTasls] = useState([])
+  
   const theme = createTheme({
         palette: {
             primary: {
@@ -34,6 +36,10 @@ function App() {
     })
   }, [])
 
+  const handleLoginWorker = () => {
+
+  }
+
   if (!currentUser) return (
     <div className="App">
       <ThemeProvider theme={theme}>
@@ -44,7 +50,7 @@ function App() {
 
   return (
     <div className="App">
-      <TaskPage />
+      <TaskPage currentUser={currentUser} currentWorker={currentWorker}/>
     </div>
   );
 }

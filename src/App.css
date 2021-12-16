@@ -21,6 +21,49 @@
   padding: 5px;
 }
 
-.login-form {
+#task-page {
+  background-color: #36393E;
+  display: flex;
+  height: 100vh;
+  width: 100vw;;
+  
+}
+
+#task-list-content {
+  display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  text-align: center;
+  background-color: #1E2124;
+  height:90vw;
+  width:80vw;
+  border-radius: 10px;
+}
+
+#tasks {
+  flex-direction: column;
+}
+
+#side-nav {
+  display:flex;
+
+  justify-content: center;
+  background-color: #4E5256;
+  width: 10em;
+  /* height: 100vh; */
+}
+
+#side-nav-logo {
+  padding-top: 1em;
+  width: 7em;
+  height: 7em;
+}
+
+#top-nav {
+  display: flex;
+  justify-content: flex-end;
+  width: 80vw;
+  height: 5em;
+  align-items: center;
   
 }

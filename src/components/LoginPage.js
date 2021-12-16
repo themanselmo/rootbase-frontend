@@ -10,7 +10,7 @@ const LoginPage = ({ setCurrentUser }) => {
     const [loggingIn, setLoggingIn] = useState(true)
 
     const [formData, setFormData] = useState({
-        username: "",
+        name: "",
         password: "",
     });
 
@@ -34,7 +34,7 @@ const LoginPage = ({ setCurrentUser }) => {
 
     const handleLogin = (e) => {
         e.preventDefault()
-        console.log(formData)
+        console.log("logging in: ", formData)
         fetch("/login", stuff)
         .then(res => {
         if (res.ok) {
@@ -51,8 +51,24 @@ const LoginPage = ({ setCurrentUser }) => {
         })
     }
 
-    const handleSignup = () => {
+    const handleSignup = (e) => {
+        e.preventDefault()
+        console.log("signing up: ", formData)
 
+        fetch("/organizations", stuff)
+        .then(res => {
+        if (res.ok) {
+            res.json().then((user) => {
+            console.log(user);
+            setCurrentUser(user);
+            });
+        } else {
+            res.json().then((errors) => {
+            console.log(errors);
+            setErrors(errors.errors);
+            });
+        }
+        })
     }
 
     return (
@@ -61,14 +77,14 @@ const LoginPage = ({ setCurrentUser }) => {
             { 
                 loggingIn ? 
                     <Stack> 
-                        <Input className="input" name="username" placeholder="Organization Name" onChange={handleChange}/>
+                        <Input className="input" name="name" placeholder="Organization Name" onChange={handleChange}/>
                         <Input className="input" name="password" placeholder="Password" type="password" onChange={handleChange}/>
                         <Button color="secondary" onClick={handleLogin}>Submit</Button>
                         <Button color="secondary" onClick={() => {setLoggingIn(false)}}>Sign Up</Button>
                     </Stack> 
                 : 
                     <Stack> 
-                        <Input className="input" name="username" placeholder="Organization Name" onChange={handleChange}/>
+                        <Input className="input" name="name" placeholder="Organization Name" onChange={handleChange}/>
                         <Input className="input" name="password" placeholder="Password" type="password" onChange={handleChange}/>
                         <Button color="secondary" onClick={handleSignup}>Submit</Button>
                         <Button color="secondary" onClick={() => {setLoggingIn(true)}}>Log In</Button>
