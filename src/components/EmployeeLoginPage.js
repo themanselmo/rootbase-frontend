@@ -54,7 +54,7 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
 
     const handleCreateEmployee = (newEmployee) => {
         newEmployee.organization_id = currentUser.id;
-        
+
         const stuff = {
             method: "POST",
              headers: {
@@ -65,7 +65,7 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
 
         fetch("/employees", stuff)
         .then(r => r.json())
-        .then(setEmployees([newEmployee, ...employees]))
+        .then(setEmployees([...employees, newEmployee]))
     }
 
     const handleCreating = () => {
