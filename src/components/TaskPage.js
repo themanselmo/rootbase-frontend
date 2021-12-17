@@ -9,8 +9,8 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
 
     const listTasks = (tasks) => tasks.map((task) => <div className="task-card">
         <p>{task.name}</p>
-        <p>{task.status}</p>
-        <p>{task.due_date}</p>
+        <p>Status: {task.status}</p>
+        <p>Due: {task.due_date}</p>
     </div>)
 
     useEffect(()=>{
