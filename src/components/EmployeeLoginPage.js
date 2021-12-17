@@ -2,11 +2,14 @@ import SideNav from "./SideNav";
 import LoginTopNav from "./LoginTopNav";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import NewEmployeeForm from "./NewEmployeeForm";
+import { Button } from "@mui/material";
 
 const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
     
     const navigate = useNavigate()
 
+    const [creating, setCreating] = useState(false)
     const [employees, setEmployees] = useState([])
     useEffect(()=> {
         fetch("/organization_employees")
@@ -47,8 +50,26 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
             });
         }
         })
-        
+    }
 
+    const handleCreateEmployee = (newEmployee) => {
+        newEmployee.organization_id = currentUser.id;
+        
+        const stuff = {
+            method: "POST",
+             headers: {
+            "Content-Type": "application/json",
+            },
+            body: JSON.stringify(newEmployee),
+        }
+
+        fetch("/employees", stuff)
+        .then(r => r.json())
+        .then(setEmployees([newEmployee, ...employees]))
+    }
+
+    const handleCreating = () => {
+        setCreating(!creating)
     }
 
     return (
@@ -56,14 +77,19 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
             <SideNav />
             <div id="employee-login-content">
                 <LoginTopNav currentUser={currentUser} />
-                <div id="employee-list-content">
-                    
-                    <p>Select your name from the list below</p>
-                    <p>Don't see yourself? <a href="">Create</a> a new employee</p>
-                    <div id="employees">
-                        {listEmployees(employees)}
+                { 
+                    creating ? 
+                        <NewEmployeeForm handleCreating={handleCreating} handleCreateEmployee={handleCreateEmployee}/>
+                    :
+                    <div id="employee-list-content">
+                        <p>Select your name from the list below</p>
+                        <p>Don't see yourself? <Button onClick={handleCreating}>Create</Button> a new employee</p>
+                        <div id="employees">
+                            {listEmployees(employees)}
+                        </div>
                     </div>
-                </div>
+                }
+                
             </div>
             
             
