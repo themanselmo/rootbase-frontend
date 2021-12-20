@@ -48,7 +48,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
 
     const handleCreateTask = (newTask, selectedGarden) => {
         let createdTask = null 
-
+        newTask.status = "incomplete"
         fetch('/tasks', {
             method: "POST",
             headers: {
@@ -61,7 +61,11 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
             console.log("Created task:", data)
             setTasks([newTask, ...tasks])
             createdTask = data
-            handleCreateGardenTask(createdTask, selectedGarden)
+
+            if(selectedGarden !== {}){
+                handleCreateGardenTask(createdTask, selectedGarden)
+            }
+            
         })
 
         // do another fetch to create the garden_tasks relation with the selected garden
