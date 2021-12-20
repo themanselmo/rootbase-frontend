@@ -42,6 +42,19 @@ const TaskDetail = ({ task, setFocusedTask, currentWorker, setTasks }) => {
 
     const sendCreateEmployeeTask = (employee) => {
         console.log("sending fetch to post new employee task")
+        
+        const et = {
+            employee_id: employee.id, 
+            task_id: task.id
+        }
+
+        fetch('/employee_tasks', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(et)
+        })
     }
 
     console.log('rerendering')
