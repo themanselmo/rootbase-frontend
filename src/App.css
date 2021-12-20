@@ -21,6 +21,30 @@
   padding: 5px;
 }
 
+#garden-page {
+  background-color: #36393E;
+  display: flex;
+  height: 100vh;
+  /* width: 100vw;; */
+  
+
+}
+
+#garden-list-content {
+    display: flex;
+  flex-direction: column;
+  /* justify-content: center; */
+  text-align: center;
+  background-color: #1E2124;
+  height:90vw;
+  width:80vw;
+  border-radius: 10px;
+}
+
+#gardens {
+  flex-direction: column;
+}
+
 #task-page {
   background-color: #36393E;
   display: flex;
@@ -44,6 +68,17 @@
   flex-direction: column;
 }
  
+.garden-card {
+  background-color: #36393E;
+  border-radius: 10px;
+  display: flex;
+  margin: 1em;
+}
+
+.garden-card p {
+  margin: 5px;
+}
+
 .task-card {
   background-color: #36393E;
   border-radius: 10px;

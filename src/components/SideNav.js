@@ -10,7 +10,7 @@ const SideNav = () => {
             <div className="side-nav-card" onClick={() => navigate('/')}>
                 Tasks
             </div>
-            <div className="side-nav-card">
+            <div className="side-nav-card" onClick={() => navigate('/GardenPage')}>
                 Gardens
             </div>
         </div>

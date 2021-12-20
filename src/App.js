@@ -5,6 +5,7 @@ import LoginPage from './components/LoginPage';
 import { createTheme, ThemeProvider } from "@mui/material/styles"
 import TaskPage from './components/TaskPage';
 import EmployeeLoginPage from './components/EmployeeLoginPage';
+import GardenPage from './components/GardenPage';
 
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
@@ -63,6 +64,7 @@ function App() {
 
   return (
     <div className="App">
+      <ThemeProvider theme={theme}>
       <Routes>
         <Route path="/" element={<TaskPage 
           currentUser={currentUser} 
@@ -75,8 +77,17 @@ function App() {
           currentUser={currentUser} 
           setCurrentWorker={setCurrentWorker} 
           
-          />} />
+          />} 
+        />
+        <Route path="/GardenPage" element={<GardenPage 
+          currentUser={currentUser}
+          currentWorker={currentWorker}
+          setCurrentWorker={setCurrentWorker}
+          />} 
+        />
+        
       </Routes>
+      </ThemeProvider>
     </div>
   );
 }

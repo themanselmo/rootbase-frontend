@@ -25,6 +25,7 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
 
     const handleCreate = () => {
         console.log("creating task", formData)
+        
         handleCreateTask(formData, selectedGarden)
         // handleCreating()
     }
@@ -42,7 +43,7 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
                 <Input className="input" name="due_date" placeholder="due date YYYY/MM/DD" onChange={handleChange}/>
                 <FormControl>
                     <Select value={selectedGarden==={} ? selectedGarden.name : ""}>
-                        
+
                         { gardens.map(garden => {
                             return <MenuItem onClick={() => handleSelectedGarden(garden)}>{garden.name}</MenuItem>
                         })}
