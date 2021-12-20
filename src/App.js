@@ -9,7 +9,6 @@ import EmployeeLoginPage from './components/EmployeeLoginPage';
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [currentWorker, setCurrentWorker] = useState(null)
-  const [tasks, setTasks] = useState([])
   
   const theme = createTheme({
         palette: {
@@ -30,7 +29,7 @@ function App() {
       if(res.ok) {
         res.json().then((user) => {
           setCurrentUser(user)
-          console.log(user)
+          // console.log(user)
         })
       }
       else {
@@ -43,7 +42,7 @@ function App() {
       if(res.ok) {
         res.json().then((worker) => {
           setCurrentWorker(worker)
-          console.log(worker)
+          // console.log(worker)
         })
       }
       else {

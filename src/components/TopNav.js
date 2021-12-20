@@ -2,7 +2,7 @@ import { Button } from "@mui/material";
 import { useNavigate } from "react-router";
 
 const TopNav = ({currentUser, currentWorker, setCurrentWorker}) => {
-    console.log(currentUser)
+    // console.log(currentUser)
     const currentDate = new Date();
     let cDay = currentDate.getDate();
     let cMonth = currentDate.getMonth() + 1;
@@ -16,7 +16,7 @@ const TopNav = ({currentUser, currentWorker, setCurrentWorker}) => {
         .then(setCurrentWorker(null))
         
     }
-    console.log(currentDate)
+    // console.log(currentDate)
     return (
         <div id="top-nav">
             <div id="nav-name">

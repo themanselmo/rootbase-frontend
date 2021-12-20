@@ -46,7 +46,8 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
 
     const handleCreating = () => setCreating(!creating)
 
-    const handleCreateTask = (newTask) => {
+    const handleCreateTask = (newTask, selectedGarden) => {
+        let createdTask = null 
 
         fetch('/tasks', {
             method: "POST",
@@ -56,8 +57,32 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
             body: JSON.stringify(newTask),
         })
         .then(res => res.json())
-        .then(data => setTasks([newTask, ...tasks]))
+        .then(data => {
+            console.log("Created task:", data)
+            setTasks([newTask, ...tasks])
+            createdTask = data
+            handleCreateGardenTask(createdTask, selectedGarden)
+        })
 
+        // do another fetch to create the garden_tasks relation with the selected garden
+    }
+
+    const handleCreateGardenTask = (task, garden) => {
+
+        let gardenTask = {
+            garden_id: garden.id,
+            task_id: task.id
+        }
+
+        fetch('/garden_tasks', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(gardenTask)
+        })
+        .then(res => res.json())
+        .then(data => console.log("Garden Task relationship created.", data))
     }
 
     return (
@@ -95,6 +120,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
                                 <NewTaskForm 
                                     handleCreateTask={handleCreateTask} 
                                     handleCreating={handleCreating}
+                                    gardens={currentUser.gardens}
                                 />
                                 :
                                 displayMyTasks ? 

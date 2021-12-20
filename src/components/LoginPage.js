@@ -81,6 +81,7 @@ const LoginPage = ({ setCurrentUser }) => {
                         <Input className="input" name="password" placeholder="Password" type="password" onChange={handleChange}/>
                         <Button color="secondary" onClick={handleLogin}>Submit</Button>
                         <Button color="secondary" onClick={() => {setLoggingIn(false)}}>Sign Up</Button>
+                        {error ? <p>{error}</p> : null}
                     </Stack> 
                 : 
                     <Stack> 
@@ -88,6 +89,7 @@ const LoginPage = ({ setCurrentUser }) => {
                         <Input className="input" name="password" placeholder="Password" type="password" onChange={handleChange}/>
                         <Button color="secondary" onClick={handleSignup}>Submit</Button>
                         <Button color="secondary" onClick={() => {setLoggingIn(true)}}>Log In</Button>
+                        {error ? <p>{error}</p> : null}
                     </Stack>    
             }
         </div>
