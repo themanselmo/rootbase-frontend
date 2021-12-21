@@ -28,6 +28,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar,
 
     const handleTaskView = (val) => {
         setDisplayMyTasks(val)
+        setCreating(false)
     }
 
     const getMyTasks = () => {
@@ -42,6 +43,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar,
 
     const viewMyTasks = () => {
         getMyTasks()
+        setCreating(false)
         handleTaskView(true)
     }
 
