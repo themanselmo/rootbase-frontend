@@ -171,3 +171,9 @@
 #nav-stuff > p, Button{
   margin: 1em;
 }
+
+#avatar {
+  width: 3em;
+  height: 3em;
+  border-radius: 10px;
+}

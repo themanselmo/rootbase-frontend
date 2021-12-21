@@ -4,7 +4,7 @@ import SideNav from "./SideNav"
 import GardenDetail from "./GardenDetail"
 import NewGardenForm from "./NewGardenForm"
 
-const GardenPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
+const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar, setCurrentAvatar }) => {
 
     const [gardens, setGardens] = useState(currentUser.gardens)
     const [creating, setCreating] = useState(false)
@@ -24,6 +24,8 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
                     currentUser={currentUser}
                     currentWorker={currentWorker}
                     setCurrentWorker={setCurrentWorker}
+                    currentAvatar={currentAvatar}
+                    setCurrentAvatar={setCurrentAvatar}
                 />
                 { focusedGarden ?
                     <div id="garden-list-content">

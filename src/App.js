@@ -10,7 +10,8 @@ import GardenPage from './components/GardenPage';
 function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [currentWorker, setCurrentWorker] = useState(null)
-  
+  const [currentAvatar, setCurrentAvatar] = useState(null)
+
   const theme = createTheme({
         palette: {
             primary: {
@@ -41,13 +42,15 @@ function App() {
     fetch("/me2")
     .then(res => {
       if(res.ok) {
-        res.json().then((worker) => {
-          setCurrentWorker(worker)
-          // console.log(worker)
+        res.json().then((data) => {
+          setCurrentWorker(data.employee)
+          setCurrentAvatar(data.avatar)
+          console.log("Reloading from app.js")
         })
       }
       else {
         setCurrentWorker(null)
+        setCurrentAvatar(null)
       }
     })
   }, [])
@@ -68,7 +71,9 @@ function App() {
       <Routes>
         <Route path="/" element={<TaskPage 
           currentUser={currentUser} 
-          currentWorker={currentWorker} 
+          currentWorker={currentWorker}
+          currentAvatar={currentAvatar}
+          setCurrentAvatar={setCurrentAvatar}
           setCurrentWorker={setCurrentWorker}
           />} 
             
@@ -83,6 +88,8 @@ function App() {
           currentUser={currentUser}
           currentWorker={currentWorker}
           setCurrentWorker={setCurrentWorker}
+          currentAvatar={currentAvatar}
+          setCurrentAvatar={setCurrentAvatar}
           />} 
         />
         

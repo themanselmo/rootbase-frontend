@@ -5,7 +5,7 @@ import { useEffect, useState } from "react"
 import TaskDetail from "./TaskDetail"
 import NewTaskForm from "./NewTaskForm"
 
-const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
+const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar, setCurrentAvatar }) => {
 
 
     const [tasks, setTasks] = useState([])
@@ -34,6 +34,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
         fetch("/my_tasks")
         .then(r => r.json())
         .then(data => {
+            console.log(data)
             let isolatedTasks = data.map(item => item.task)
             setMyTasks(isolatedTasks)
         })
@@ -59,7 +60,7 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
         .then(res => res.json())
         .then(data => {
             console.log("Created task:", data)
-            setTasks([newTask, ...tasks])
+            setTasks([...tasks, data])
             createdTask = data
 
             if(selectedGarden !== {}){
@@ -96,6 +97,8 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker }) => {
                 <TopNav currentUser={currentUser} 
                     currentWorker={currentWorker} 
                     setCurrentWorker={setCurrentWorker}
+                    currentAvatar={currentAvatar}
+                    setCurrentAvatar={setCurrentAvatar}
                 />
                 { focusedTask ? 
                     <div id="task-list-content">

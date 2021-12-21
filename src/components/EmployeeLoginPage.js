@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import NewEmployeeForm from "./NewEmployeeForm";
 import { Button } from "@mui/material";
+import { DirectUpload } from 'activestorage';
 
 const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
     
@@ -40,7 +41,7 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
         .then(res => {
         if (res.ok) {
             res.json().then((user) => {
-            console.log(user);
+            console.log("logging in",user);
             setCurrentWorker(user);
             navigate('/')
             });
@@ -52,8 +53,12 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
         })
     }
 
-    const handleCreateEmployee = (newEmployee) => {
-        newEmployee.organization_id = currentUser.id;
+    const handleCreateEmployee = (formData) => {
+        let newEmployee = {
+            name: formData.name,
+            pin: formData.pin,
+            organization_id: currentUser.id
+        }
 
         const stuff = {
             method: "POST",
@@ -65,7 +70,32 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
 
         fetch("/employees", stuff)
         .then(r => r.json())
-        .then(setEmployees([...employees, newEmployee]))
+        .then(data => {
+            setEmployees([...employees, data])
+            uploadFile(formData.avatar, data)
+        })
+    }
+
+    const uploadFile = (file, employee) => {
+        const upload = new DirectUpload(file, '/rails/active_storage/direct_uploads')
+        upload.create((error, blob) => {
+            if(error) {
+                console.log(error)
+            } else {
+                fetch(`/employees/${employee.id}`, {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({avatar: blob.signed_id})
+                })
+                .then(res => res.json())
+                .then(result => {
+                    setCurrentWorker(result)
+                })
+            }
+        })
     }
 
     const handleCreating = () => {

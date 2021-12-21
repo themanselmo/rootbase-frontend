@@ -8,16 +8,23 @@ import { useState } from "react"
 const NewEmployeeForm = ({ handleCreating, handleCreateEmployee }) => {
     const [formData, setFormData] = useState({
         name: "",
-        pin: ""
+        pin: "",
+        avatar: {}
     })
 
 
     const handleChange = (e) => {
-        console.log(e.target.value)
-        setFormData({
-        ...formData,
-        [e.target.name]: e.target.value,
-        });
+        if(e.target.name === 'avatar') {
+            setFormData({...formData,
+            [e.target.name]: e.target.files[0]
+            })
+        } else {
+            console.log(e.target.value)
+            setFormData({
+            ...formData,
+            [e.target.name]: e.target.value,
+            })
+        } 
     };
 
     const handleCreate = () => {
@@ -32,6 +39,7 @@ const NewEmployeeForm = ({ handleCreating, handleCreateEmployee }) => {
             <Stack>
                 <Input className="input" name="name" placeholder="name" onChange={handleChange}/>
                 <Input className="input" name="pin" placeholder="pin" onChange={handleChange}/>
+                <Input type="file" name="avatar" onChange={handleChange} />
                 <Button color="secondary" onClick={handleCreate}>Submit</Button>
             </Stack>
         </div>
