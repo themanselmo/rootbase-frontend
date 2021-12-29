@@ -1,4 +1,5 @@
 import { useState } from "react"
+import Button from "@mui/material/Button"
 import TopNav from "./TopNav"
 import SideNav from "./SideNav"
 import GardenDetail from "./GardenDetail"
@@ -15,6 +16,24 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvata
            <p>{garden.name}</p>
        </div>)
     }
+
+    const handleCreateGarden = (formData) => {
+        
+        fetch('/gardens', {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify(formData),
+        })
+        .then(res => res.json())
+        .then(data => {
+            console.log("Created Garden:", data)
+            setGardens([...gardens, data])
+        })
+    }
+
+    const handleCreating = () => setCreating(!creating)
 
     return (
         <div id="garden-page">
@@ -33,9 +52,13 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvata
                     </div>
                     :
                     <div id="garden-list-content">
+                        <Button onClick={handleCreating}>New Garden</Button>
                         {
                             creating ? 
-                                <NewGardenForm />
+                                <NewGardenForm 
+                                    handleCreateGarden={handleCreateGarden} 
+                                    gardens={gardens}
+                                />
                                 :
                                 <div id="gardens">
                                     <h1>Gardens</h1>
