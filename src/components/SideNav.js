@@ -8,10 +8,10 @@ const SideNav = () => {
         <div id="side-nav">
             <img id="side-nav-logo" src={logo} />
             <div className="side-nav-card" onClick={() => navigate('/')}>
-                Tasks
+                <p>Tasks</p>
             </div>
             <div className="side-nav-card" onClick={() => navigate('/GardenPage')}>
-                Gardens
+                <p>Gardens</p>
             </div>
         </div>
     )

@@ -1,3 +1,8 @@
+@import url('https://fonts.googleapis.com/css2?family=Neuton&family=Varela+Round&display=swap');
+
+p {
+  font-family: 'Varela Round', sans-serif;
+}
 
 #login-page {
   display:flex;
@@ -64,7 +69,7 @@
   background-color: #36393E;
   display: flex;
   height: 100vh;
-  /* width: 100vw;; */
+  width: 100vw-10em;;
   
 }
 
@@ -74,8 +79,7 @@
   /* justify-content: center; */
   text-align: center;
   background-color: #1E2124;
-  height:90vw;
-  width:80vw;
+  height:80vh;
   border-radius: 10px;
 }
 
@@ -102,7 +106,7 @@
   background-color: #36393E;
   display: flex;
   height: 100vh;
-  width: 100vw;;
+  /* width: (100vw-10em);; */
 
 }
 
