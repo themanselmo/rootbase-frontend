@@ -60,6 +60,7 @@ const TaskDetail = ({ task, setFocusedTask, currentWorker, setTasks }) => {
     console.log('rerendering')
     return (
         <div className="task-detail">
+            <Button onClick={() => setFocusedTask(null)}>Close</Button>
             <h1>{task.name}</h1>
             <p>{task.status}</p>
             <p>{task.due_date}</p>
@@ -71,8 +72,6 @@ const TaskDetail = ({ task, setFocusedTask, currentWorker, setTasks }) => {
                 : 
                 null
             }
-          
-            <Button onClick={() => setFocusedTask(null)}>Close</Button>
         </div>
     )
 }

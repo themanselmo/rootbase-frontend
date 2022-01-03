@@ -41,7 +41,7 @@ const TopNav = ({currentUser, currentWorker, setCurrentWorker, currentAvatar, se
                 <p>{currentUser.name}</p>
             </div>
             <div id="nav-stuff">
-                <p>{cYear} / {cMonth} / {cDay}</p>
+                <p>Today: {cYear} / {cMonth} / {cDay}</p>
                 {currentWorker ? 
                     <>
                         {currentAvatar ? 

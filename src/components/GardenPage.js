@@ -12,7 +12,8 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvata
     const [focusedGarden, setFocusedGarden] = useState(null)
 
     const listGardens = (gardens) => {
-       return gardens.map(garden => <div className="garden-card">
+        console.log(gardens)
+       return gardens.map(garden => <div onClick={()=>setFocusedGarden(garden)} className="garden-card">
            <p>{garden.name}</p>
        </div>)
     }
@@ -48,7 +49,10 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvata
                 />
                 { focusedGarden ?
                     <div id="garden-list-content">
-                        <GardenDetail />
+                        <GardenDetail 
+                            garden={focusedGarden}
+                            setFocusedGarden={setFocusedGarden}
+                        />
                     </div>
                     :
                     <div id="garden-list-content">

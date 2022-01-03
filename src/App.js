@@ -31,7 +31,7 @@ function App() {
       if(res.ok) {
         res.json().then((user) => {
           setCurrentUser(user)
-          // console.log(user)
+          console.log(user)
         })
       }
       else {
