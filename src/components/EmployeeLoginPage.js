@@ -3,7 +3,7 @@ import LoginTopNav from "./LoginTopNav";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 import NewEmployeeForm from "./NewEmployeeForm";
-import { Button } from "@mui/material";
+import { Button, Input, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from "@mui/material";
 import { DirectUpload } from 'activestorage';
 
 const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
@@ -12,21 +12,46 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
 
     const [creating, setCreating] = useState(false)
     const [employees, setEmployees] = useState([])
+
+    const [open, setOpen] = useState(false)
+    const [pin, setPin] = useState('')
+    const [currentEID, setCurrentEID] = useState(null)
+
     useEffect(()=> {
         fetch("/organization_employees")
         .then(r => r.json())
         .then(data => setEmployees(data))
     }, [])
 
+    const handleClickOpen = (EID) => {
+        setCurrentEID(EID)
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handlePinSubmit = () => {
+        handleLoginEmployee(currentEID)
+        handleClose()
+    }
+
+    const handleChange = (e) => {
+        setPin(e.target.value)
+    }
+
     const listEmployees = (employees) => employees.map((employee) => 
-        <div className="employee-card" onClick={() => handleLoginEmployee(employee.id)}>
+        <div className="employee-card" onClick={() => handleClickOpen(employee.id)}>
             <p>{employee.name}</p>
             <p>{employee.name}@rootbase.com</p>
         </div>
     )
 
     const handleLoginEmployee = (employee_id) => {
-        const enteredPin = prompt("Please enter your pin")
+        // const enteredPin = prompt("Please enter your pin")
+
+        const enteredPin = pin;
 
         const stuff = {id: employee_id, pin: enteredPin}
         const postData = {
@@ -122,7 +147,22 @@ const EmployeeLoginPage = ({ currentUser, setCurrentWorker }) => {
                 
             </div>
             
-            
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Log In</DialogTitle>
+                <DialogContent>
+                <DialogContentText>
+                    To log in, please enter your pin.
+                </DialogContentText>
+                <Input
+                    autoFocus 
+                    onChange={handleChange}
+                />
+                </DialogContent>
+                <DialogActions>
+                <Button onClick={handleClose}>Cancel</Button>
+                <Button onClick={handlePinSubmit}>Submit</Button>
+                </DialogActions>
+            </Dialog>
         </div>
     )
 }

@@ -79,7 +79,8 @@ p {
   /* justify-content: center; */
   text-align: center;
   background-color: #1E2124;
-  height:80vh;
+  height:90vh;
+  width:100%;
   border-radius: 10px;
 }
 
@@ -99,6 +100,13 @@ p {
 }
 
 .task-card:hover {
+  background-color: #3f4246;
+}
+
+.task-comment {
+  margin-top: 1rem;
+  height:2em;
+  align-content: center;
   background-color: #3f4246;
 }
 

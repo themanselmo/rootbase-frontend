@@ -73,7 +73,7 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
 			</Snackbar>
             <Stack>
                 <Input className="input" name="name" placeholder="name" onChange={handleChange}/>
-                <Input className="input" name="due_date" placeholder="due date YYYY/MM/DD" onChange={handleChange}/>
+                <Input className="input" type="date" name="due_date" placeholder="due date YYYY/MM/DD" onChange={handleChange}/>
                 <FormControl>
                     <Select value={selectedGarden==={} ? selectedGarden.name : ""}>
 
