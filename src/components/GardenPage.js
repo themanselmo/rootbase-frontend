@@ -65,7 +65,7 @@ const GardenPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvata
                                 />
                                 :
                                 <div id="gardens">
-                                    <h1>Gardens</h1>
+                                    <h1 className="page-header">Gardens</h1>
                                     {listGardens(gardens)}
                                 </div>
                         }

@@ -140,6 +140,8 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar,
                                     :
                                     <div id="tasks">
                                     {/* <h1>Current Tasks</h1> */}
+                                    <h1 className="page-header">Tasks</h1>
+
                                         {listTasks(tasks)}
                                     {/* <h1>Upcoming Tasks</h1>
 

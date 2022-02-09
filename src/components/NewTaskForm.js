@@ -1,6 +1,6 @@
 
 // component imports
-import { Stack, Input, Select, MenuItem, FormControl, Snackbar, Grow } from "@mui/material"
+import { Stack, Input, Select, MenuItem, FormControl, Snackbar, Grow, InputLabel } from "@mui/material"
 import MuiAlert from '@mui/material/Alert';
 
 import Button from "@mui/material/Button"
@@ -15,6 +15,7 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
         due_date: ""
     })
     const [selectedGarden, setSelectedGarden] = useState({})
+    const [gardenName, setGardenName] = useState({})
 
     const [open, setOpen] = useState(false);
 	const [transition, setTransition] = useState(Grow);
@@ -51,6 +52,10 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
         setOpen(false);
 	};
 
+    const handleGardenChange = (event) => {
+        setGardenName(event.target.value)
+    }
+    console.log(selectedGarden)
     return (
         <div id="new-employee-form">
             <Snackbar
@@ -75,11 +80,20 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
                 <Input className="input" name="name" placeholder="name" onChange={handleChange}/>
                 <Input className="input" type="date" name="due_date" placeholder="due date YYYY/MM/DD" onChange={handleChange}/>
                 <FormControl>
-                    <Select value={selectedGarden==={} ? selectedGarden.name : ""}>
+                    {/* <InputLabel id="garden-select-label">Garden</InputLabel> */}
 
+                    <Select 
+                        // labelId="garden-select-label"
+                        value={gardenName}
+                        onChange={handleGardenChange}
+                    >
+                    {/* value={selectedGarden== "" ? selectedGarden.name : ""} */}
                         { gardens.map(garden => {
-                            return <MenuItem onClick={() => handleSelectedGarden(garden)}>{garden.name}</MenuItem>
+                            // return <MenuItem onClick={() => handleSelectedGarden(garden)}>{garden.name}</MenuItem>
+                            return <MenuItem onClick={() => handleSelectedGarden(garden)} value={garden.name}>{garden.name}</MenuItem>
+
                         })}
+
                     </Select>
                 </FormControl>
                 <Button color="secondary" onClick={handleCreate}>Submit</Button>

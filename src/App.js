@@ -11,7 +11,7 @@ function App() {
   const [currentUser, setCurrentUser] = useState(null)
   const [currentWorker, setCurrentWorker] = useState(null)
   const [currentAvatar, setCurrentAvatar] = useState(null)
-
+  
   const theme = createTheme({
         palette: {
             primary: {
