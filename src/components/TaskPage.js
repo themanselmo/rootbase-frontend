@@ -1,13 +1,12 @@
 import SideNav from "./SideNav"
-import TopNav from "./TopNav"
 import Button from "@mui/material/Button"
 import { useEffect, useState } from "react"
 import TaskDetail from "./TaskDetail"
 import NewTaskForm from "./NewTaskForm"
+import { useSelector } from "react-redux"
 
-const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar, setCurrentAvatar }) => {
-
-
+const TaskPage = () => {
+    const {organization} = useSelector((state) => state.authOrg)
     const [tasks, setTasks] = useState([])
     const [myTasks, setMyTasks] = useState([])
     const [focusedTask, setFocusedTask] = useState(null)
@@ -96,18 +95,12 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar,
         <div id="task-page">
             <SideNav />
             <div id="task-page-content">
-                <TopNav currentUser={currentUser} 
-                    currentWorker={currentWorker} 
-                    setCurrentWorker={setCurrentWorker}
-                    currentAvatar={currentAvatar}
-                    setCurrentAvatar={setCurrentAvatar}
-                />
                 { focusedTask ? 
                     <div id="task-list-content">
                         <TaskDetail 
                             task={focusedTask} 
                             setFocusedTask={setFocusedTask}
-                            currentWorker={currentWorker}
+                            // currentWorker={currentWorker}
                             setTasks={setTasks}
                         />
                     </div>
@@ -115,21 +108,21 @@ const TaskPage = ({ currentUser, currentWorker, setCurrentWorker, currentAvatar,
                     <div id="task-list-content">
                         <div id="task-buttons">
                             <Button onClick={() => handleTaskView(false)}>All Tasks</Button>
-                            {currentWorker ? 
+                            {/* {currentWorker ? 
                                 <>
                                     <Button onClick={viewMyTasks}>My Tasks</Button> 
                                     <Button onClick={handleCreating}>New Task</Button>
                                 </>   
                                     : 
                                 null
-                            }
+                            } */}
                         </div>
                         {
                             creating ? 
                                 <NewTaskForm 
                                     handleCreateTask={handleCreateTask} 
                                     handleCreating={handleCreating}
-                                    gardens={currentUser.gardens}
+                                    gardens={organization.gardens}
                                 />
                                 :
                                 displayMyTasks ? 
