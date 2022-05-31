@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authService from "./authOrgService";
+import authOrgService from "./authOrgService";
 
 const organization = JSON.parse(localStorage.getItem("organization"));
 
@@ -11,11 +11,11 @@ const initialState = {
   message: "",
 };
 
-export const register = createAsyncThunk(
-  "authOrg/register",
+export const registerOrg = createAsyncThunk(
+  "authOrg/registerOrg",
   async (organization, thunkAPI) => {
     try {
-      return await authService.register(organization);
+      return await authOrgService.registerOrg(organization);
     } catch (error) {
       const message =
         (error.response &&
@@ -28,68 +28,84 @@ export const register = createAsyncThunk(
   }
 );
 
-export const login = createAsyncThunk("authOrg/login", async (organization, thunkAPI) => {
-  try {
-    return await authService.login(organization);
-  } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+export const loginOrg = createAsyncThunk(
+  "authOrg/loginOrg",
+  async (organization, thunkAPI) => {
+    try {
+      return await authOrgService.loginOrg(organization);
+    } catch (error) {
+      const message =
+        (error.response &&
+          error.response.data &&
+          error.response.data.message) ||
+        error.message ||
+        error.toString();
+      return thunkAPI.rejectWithValue(message);
+    }
   }
+);
+
+export const logoutOrg = createAsyncThunk("authOrg/logoutOrg", async () => {
+  await authOrgService.logoutOrg();
 });
 
-export const logout = createAsyncThunk("auth/logout", async () => {
-    await authService.logout()
-})
-
-export const authSlice = createSlice({
-    name: "auth",
-    initialState,
-    reducers: {
-        reset: (state) => {
-            state.isLoading = false;
-            state.isError = false;
-            state.isSuccess = false;
-            state.message = ""
-        }
+export const authOrgSlice = createSlice({
+  name: "authOrg",
+  initialState,
+  reducers: {
+    resetOrg: (state) => {
+      state.isLoading = false;
+      state.isError = false;
+      state.isSuccess = false;
+      state.message = "";
     },
+    updateOrgGardens: (state, action) => {
+      const newOrg = { ...state.organization, gardens: action.payload };
+      state.organization = newOrg;
+      localStorage.setItem("organization", JSON.stringify(newOrg));
+    },
+    updateOrgTasks: (state, action) => {
+      const newOrg = { ...state.organization, tasks: action.payload };
+      state.organization = newOrg;
+      localStorage.setItem("organization", JSON.stringify(newOrg));
+    },
+  },
 
-    extraReducers: (builder) => {
-        builder
-            .addCase(register.pending, (state) => {
-                state.isLoading = true;
-            })
-            .addCase(register.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.organization = action.payload;
-            })
-            .addCase(register.rejected, (state, action) => {
-                state.isLoading = false;
-                state.isError = true;
-                state.message = action.payload
-            })
-            .addCase(logout.fulfilled, (state) => {
-                state.organization = null
-            })
-            .addCase(login.pending, (state) => {
-                state.isLoading = true
-            })
-            .addCase(login.fulfilled, (state, action) => {
-                state.isLoading = false;
-                state.isSuccess = true;
-                state.organization = action.payload;
-            })
-            .addCase(login.rejected, (state, action) => {
-                state.isLoading = false;
-                state.isError = true;
-                state.message = action.payload
-            })
-    }
-})
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerOrg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(registerOrg.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.organization = action.payload;
+      })
+      .addCase(registerOrg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      })
+      .addCase(logoutOrg.fulfilled, (state) => {
+        state.organization = null;
+      })
+      .addCase(loginOrg.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(loginOrg.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isSuccess = true;
+        state.organization = action.payload;
+      })
+      .addCase(loginOrg.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.message = action.payload;
+      });
+  },
+});
 
-export const { reset } = authSlice.actions;
+export const { resetOrg, updateOrgGardens, updateOrgTasks } =
+  authOrgSlice.actions;
 
-export default authSlice.reducer;
+export default authOrgSlice.reducer;

@@ -1,138 +1,116 @@
-import { Button, Input, Stack } from "@mui/material"
+import { Button, Input, Stack } from "@mui/material";
 import { useEffect, useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import { updateOrgTasks } from "../features/authOrg/authOrgSlice";
+import {
+  getTaskComments,
+  createTaskComment,
+  resetComments,
+} from "../features/comment/commentSlice";
+import { createEmpTask, updateTask } from "../features/task/taskSlice";
 
-const TaskDetail = ({ task, setFocusedTask, currentWorker, setTasks }) => {
+const TaskDetail = ({ task, setFocusedTask }) => {
+  const dispatch = useDispatch();
 
-    const [comments, setComments] = useState([])
-    const [input, setInput] = useState('')
+  const [input, setInput] = useState("");
 
-    useEffect(()=>{
-        fetch(`comments/${task.id}`)
-        .then(res => res.json())
-        .then(data => {
-            console.log(data)
-            setComments(data)
-        })
-    },[])
+  const { employee } = useSelector((state) => state.authEmp);
+  const { comments, isError, isSuccess, isLoading, message } = useSelector(
+    (state) => state.comments
+  );
 
-    const renderComments = () => comments.map((comment) => <div className="task-comment">
-      {comment.employee.name}: {comment.content} | Posted at: {comment.created_at} 
-    </div>)
+  const { organization } = useSelector((state) => state.authOrg);
+  const orgTasks = organization.tasks;
 
-    const postComment = (comment) => {
-        if(comment !== '') {
+  useEffect(() => {
+    dispatch(getTaskComments(task.id));
 
-            let newComment = {
-                employee_id: currentWorker.id,
-                task_id: task.id,
-                content: comment
-            }
+    return () => {
+      dispatch(resetComments());
+    };
+  }, [dispatch, task.id]);
 
-            fetch('comments', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(newComment)
-            })
-            .then(res => res.json())
-            .then(data => {
-                console.log('comment added: ', data)
-                setComments([...comments, data])
-            })
-        }
+  const postComment = (comment) => {
+    let newComment = {
+      employee_id: employee.id,
+      task_id: task.id,
+      content: comment,
+    };
+
+    if (comment !== "") {
+      dispatch(createTaskComment(newComment)).then(() => {
+        console.log("hi");
+        setInput("");
+      });
     }
+  };
 
-    const startTask = () => {
-       let newTask = {...task};
+  const startTask = () => {
+    let newTask = { ...task };
+    newTask.status = "in progress";
+    dispatch(updateTask(newTask))
+      .unwrap()
+      .then((updatedTask) => {
+        setFocusedTask(updatedTask);
+        dispatch(
+          updateOrgTasks(
+            orgTasks.map((orgTask) =>
+              orgTask.id === updatedTask.id ? updatedTask : orgTask
+            )
+          )
+        );
+      });
+    dispatch(createEmpTask({ employee_id: employee.id, task_id: task.id }));
+  };
 
-        newTask.status = 'in progress'
-        setTasks((prev)=>{
-            return prev.map(task => {
-                if(task.id === newTask.id) {
-                    return newTask
-                } else {
-                    return task
-                }
-            })
-        })
-        setFocusedTask(newTask)
-        sendUpdatedTask(newTask)
-        sendCreateEmployeeTask(currentWorker)
-    }
+  const finishTask = () => {
+    let newTask = { ...task };
+    newTask.status = "finished";
+    dispatch(updateTask(newTask))
+      .unwrap()
+      .then((updatedTask) => {
+        setFocusedTask(updatedTask);
+        dispatch(
+          updateOrgTasks(
+            orgTasks.map((orgTask) =>
+              orgTask.id === updatedTask.id ? updatedTask : orgTask
+            )
+          )
+        );
+      });
+  };
 
-    const finishTask = () => {
-        let newTask = {...task};
-        newTask.status = 'finished'
-        setTasks((prev)=> prev.map(task => task.id === newTask.id ? newTask : task))
-        setFocusedTask(newTask)
+  const handleChange = (e) => {
+    setInput(e.target.value);
+  };
 
-        sendUpdatedTask(newTask)
-    }
+  return (
+    <div className="task-detail">
+      <Button onClick={() => setFocusedTask(null)}>Close</Button>
+      <h1>{task.name}</h1>
+      <p>{task.status}</p>
+      <p>{task.due_date}</p>
+      {employee && (
+        <Stack>
+          {task.status === "incomplete" ? (
+            <Button onClick={startTask}>Start Task</Button>
+          ) : (
+            <Button onClick={finishTask}>Finish Task</Button>
+          )}
+          <Input onChange={handleChange} value={input} />
+          <Button onClick={() => postComment(input)}>Submit Comment</Button>
+        </Stack>
+      )}
+      <div className="comment-section">
+        {comments.map((comment) => (
+          <div className="task-comment">
+            {comment.employee.name}: {comment.content} | Posted at:{" "}
+            {comment.created_at}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
 
-    const sendUpdatedTask = (updatedTask) => {
-        console.log("sending fetch to update task", task)
-        fetch(`/tasks/${updatedTask.id}`, {
-            method: "PATCH",
-            headers: {
-             "Content-Type": "application/json",
-            },
-            body: JSON.stringify(updatedTask),
-        })
-    }
-
-    const sendCreateEmployeeTask = (employee) => {
-        console.log("sending fetch to post new employee task")
-        
-        const et = {
-            employee_id: employee.id, 
-            task_id: task.id
-        }
-
-        fetch('/employee_tasks', {
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-            body: JSON.stringify(et)
-        })
-    }
-
-    const handleChange = (e) => {
-        setInput(e.target.value)
-    }
-
-    console.log(task)
-    return (
-        <div className="task-detail">
-            <Button onClick={() => setFocusedTask(null)}>Close</Button>
-            <h1>{task.name}</h1>
-            <p>{task.status}</p>
-            <p>{task.due_date}</p>
-            <Stack>
-                { currentWorker ? 
-                task.status === 'incomplete' ? 
-                    <Button onClick={startTask}>Start Task</Button> 
-                    :
-                    <Button onClick={finishTask}>Finish Task</Button>
-                : 
-                null
-                }
-                { currentWorker ? 
-                    <>
-                    <Input onChange={handleChange}/>
-                    <Button onClick={() => postComment(input)}>Submit Comment</Button>
-                    </> 
-                    :
-                    null
-                }
-            </Stack>
-            <div className="comment-section">
-                { renderComments() }
-            </div>
-            
-        </div>
-    )
-}
-
-export default TaskDetail
+export default TaskDetail;

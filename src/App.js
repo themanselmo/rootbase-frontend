@@ -1,14 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { useSelector } from "react-redux";
-import "./App.css";
-import LoginPage from "./components/LoginPage";
 import { ThemeProvider } from "@mui/material/styles";
-import TaskPage from "./components/TaskPage";
-import EmployeeLoginPage from "./components/EmployeeLoginPage";
-import GardenPage from "./components/GardenPage";
+
+import "./App.css";
 import TopNav from "./components/TopNav";
 import theme from "./theme";
 import ProtectedRoute from "./components/atoms/ProtectedRoute";
+
+import TaskPage from "./pages/TaskPage";
+import GardenPage from "./pages/GardenPage";
+import LoginPage from "./pages/LoginPage";
+import EmployeeLoginPage from "./pages/EmployeeLoginPage";
 
 function App() {
   const { organization } = useSelector((state) => state.authOrg);

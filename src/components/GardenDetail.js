@@ -1,32 +1,35 @@
 import { Button } from "@mui/material";
-import { useEffect, useState } from "react";
-
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { resetTasks, getGardenTasks } from "../features/task/taskSlice";
 const GardenDetail = ({ garden, setFocusedGarden }) => {
-  const [tasks, setTasks] = useState([]);
+  const dispatch = useDispatch();
+
+  const { tasks, isLoading, isSuccess, isError, message } = useSelector(
+    (state) => state.tasks
+  );
 
   useEffect(() => {
-    fetch(`/gardens/${garden.id}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data.tasks);
-      });
-  }, []);
+    dispatch(getGardenTasks(garden.id));
 
-  const listTasks = (tasks) =>
-    tasks.map((task) => (
-      <div className="task-card">
-        <p>{task.name}</p>
-        <p>Status: {task.status}</p>
-        <p>Due: {task.due_date}</p>
-      </div>
-    ));
+    return () => {
+      dispatch(resetTasks());
+    };
+  }, [dispatch, garden.id]);
 
   return (
     <div className="garden-detail">
       <Button onClick={() => setFocusedGarden(null)}>Close</Button>
       <h1>{garden.name}</h1>
       <p>Tasks</p>
-      {listTasks(tasks)}
+      {tasks &&
+        tasks.map((task) => (
+          <div className="task-card">
+            <p>{task.name}</p>
+            <p>Status: {task.status}</p>
+            <p>Due: {task.due_date}</p>
+          </div>
+        ))}
     </div>
   );
 };
