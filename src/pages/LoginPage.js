@@ -81,13 +81,21 @@ const LoginPage = () => {
 
   return (
     <div id="login-page">
-      <Div>
-        <span className={`moon-sun ${flip ? "daylight-animated" : "nightlight-animated"}`}>
+      <Div hidden={hidden}>
+        <span
+          className={`moon-sun ${
+            flip ? "daylight-animated" : "nightlight-animated"
+          } ${!hidden ? "hidden" : ""}`}
+        >
           <Circle height="100px" width="100px" />
         </span>
-       
-        
-
+        <span
+          className={`moon-sun ${
+            !flip ? "daylight-animated" : "nightlight-animated"
+          } ${hidden ? "hidden" : ""}`}
+        >
+          <Circle height="100px" width="100px" />
+        </span>
         <section className="upper-animation">
           <span
             className={`${
@@ -123,6 +131,7 @@ const LoginPage = () => {
           <span className="plant-pot">
             <PlantPot width="250px" height="250px" />
           </span>
+          <span className="ground"></span>
         </section>
       </Div>
 
@@ -196,7 +205,13 @@ const Div = styled.div`
   flex-direction: column;
   height: 400px;
   width: 400px;
-  .upper-animation{
+  border-radius: 14px;
+  position: relative;
+  background: ${({ hidden }) => (hidden ? "#89CFF0" : "#202A44")};
+  overflow: hidden;
+  transition: 1s ease;
+  transform: scale(0.8);
+  .upper-animation {
     position: relative;
     width: 100%;
     height: 100%;
@@ -205,7 +220,7 @@ const Div = styled.div`
     justify-content: center;
     overflow: hidden;
   }
-  .lower-animation{
+  .lower-animation {
     position: relative;
     width: 100%;
     height: 100%;
@@ -217,7 +232,7 @@ const Div = styled.div`
   .tree {
     fill: #598f14;
     position: absolute;
-    bottom: -13px
+    bottom: -13px;
   }
   .seedling {
     fill: #598f14;
@@ -228,50 +243,83 @@ const Div = styled.div`
     fill: #936647;
     position: absolute;
     bottom: 20px;
+    z-index: 2;
   }
-  .hidden{
+  .ground {
+    position: absolute;
+    width: 600px;
+    height: 200px;
+    bottom: -90px;
+    background: #154734;
+    border-radius: 40%;
+    z-index: 1;
+  }
+  .hidden {
     display: none;
   }
   .moon-sun {
     position: absolute;
-    transition: 1s;
-    animation: sun-to-moon 1s linear;
-    transform: rotate(0deg) translateX(200px) rotate(0deg)
+
+    bottom: 90px;
+    right: 150px;
+    transform: rotate(-90deg) translateX(200px) rotate(90deg);
+    fill: ${({ hidden }) => (hidden ? "yellow" : "white")};
   }
 
   .daylight-animated {
-    fill: yellow;
     animation: sun-to-moon 1s linear;
   }
 
-  .nightlight-animated{
-    fill: white;
-    animation: sun-to-moon 1s linear reverse;
+  .nightlight-animated {
+    animation: sun-to-moon 1s ease;
   }
-  
+
   .popup-animated {
-    animation-timing-function: cubic-bezier(0.280, 0.840, 0.420, 1);
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
     animation: cartoon-slide 1s ease;
   }
 
   .popdown-animated {
-    animation-timing-function: cubic-bezier(0.280, 0.840, 0.420, 1);
-    animation: cartoon-slide 1s ease reverse
+    animation-timing-function: cubic-bezier(0.28, 0.84, 0.42, 1);
+    animation: cartoon-slide 1s ease reverse;
   }
 
   @keyframes cartoon-slide {
-        0%   { transform: scale(1,1)      translateY(0); }
-        10%  { transform: scale(1.1,.9)   translateY(0); }
-        30%  { transform: scale(.9,1.1)   translateY(-50px); }
-        50%  { transform: scale(1.05,.95) translateY(100); }
-        57%  { transform: scale(1,1)      translateY(200px); }
-        64%  { transform: scale(1,1)      translateY(300); }
-        100% { transform: scale(1,1)      translateY(300px); }
+    0% {
+      transform: scale(1, 1) translateY(0);
     }
+    10% {
+      transform: scale(1.1, 0.9) translateY(0);
+    }
+    30% {
+      transform: scale(0.9, 1.1) translateY(-50px);
+    }
+    50% {
+      transform: scale(1.05, 0.95) translateY(100);
+    }
+    57% {
+      transform: scale(1, 1) translateY(200px);
+    }
+    64% {
+      transform: scale(1, 1) translateY(300);
+    }
+    100% {
+      transform: scale(1, 1) translateY(300px);
+    }
+  }
 
   @keyframes sun-to-moon {
-    from { fill: yellow;}
-    to  { fill: white;}
-  }
+    0% {
+      transform: rotate(-90deg) translateX(200px) rotate(90deg);
+    }
+    20% {
+      transform: rotate(-110deg) translateX(200px) rotate(110deg);
+    }
+    80% {
+      transform: rotate(285deg) translateX(200px) rotate(-285deg);
+    }
+    100% {
+      transform: rotate(270deg) translateX(200px) rotate(-270deg);
+    }
   }
 `;
