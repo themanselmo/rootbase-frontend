@@ -1,24 +1,22 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import orgEmployeesService from "./orgEmployeesService";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import orgEmployeesService from './orgEmployeesService';
 
 const initialState = {
   orgEmployees: null,
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
+  message: ''
 };
 
 export const getOrgEmployees = createAsyncThunk(
-  "orgEmployees/getOrgEmployees",
+  'orgEmployees/getOrgEmployees',
   async (_, thunkAPI) => {
     try {
       return await orgEmployeesService.getOrgEmployees();
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -27,10 +25,10 @@ export const getOrgEmployees = createAsyncThunk(
 );
 
 export const orgEmployeesSlice = createSlice({
-  name: "orgEmployees",
+  name: 'orgEmployees',
   initialState,
   reducers: {
-      resetOrgEmployees: (state) => initialState,
+    resetOrgEmployees: (state) => initialState
   },
 
   extraReducers: (builder) => {
@@ -48,7 +46,7 @@ export const orgEmployeesSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       });
-  },
+  }
 });
 
 export const { resetOrgEmployees } = orgEmployeesSlice.actions;

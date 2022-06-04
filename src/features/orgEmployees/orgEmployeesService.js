@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = "/organization_employees";
+const API_URL = '/organization_employees';
 
 // Get all organization's employees
 

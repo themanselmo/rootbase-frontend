@@ -1,54 +1,45 @@
-import React from "react";
-import styled from "styled-components";
-import Circle from "../atoms/icons/Circle";
-import PlantPot from "../atoms/icons/PlantPot";
-import Seedling from "../atoms/icons/Seedling";
-import Tree from "../atoms/icons/Tree";
+import React from 'react';
+import styled from 'styled-components';
+import Circle from '../atoms/icons/Circle';
+import PlantPot from '../atoms/icons/PlantPot';
+import Seedling from '../atoms/icons/Seedling';
+import Tree from '../atoms/icons/Tree';
 
 const DayNightAnimation = ({ flip, hidden, hidden2 }) => {
   return (
     <AnimationContainer hidden={hidden}>
       <span
-        className={`moon-sun ${
-          flip ? "daylight-animated" : "nightlight-animated"
-        } ${!hidden ? "hidden" : ""}`}
-      >
+        className={`moon-sun ${flip ? 'daylight-animated' : 'nightlight-animated'} ${
+          !hidden ? 'hidden' : ''
+        }`}>
         <Circle height="100px" width="100px" />
       </span>
       <span
-        className={`moon-sun ${
-          !flip ? "nightlight-animated" : "daylight-animated"
-        } ${hidden ? "hidden" : ""}`}
-      >
+        className={`moon-sun ${!flip ? 'nightlight-animated' : 'daylight-animated'} ${
+          hidden ? 'hidden' : ''
+        }`}>
         <Circle height="100px" width="100px" />
       </span>
       <section className="upper-animation">
         <span
-          className={`${
-            flip ? "tree popdown-animated" : "tree popup-animated"
-          }  ${!hidden ? "hidden" : ""}`}
-        >
+          className={`${flip ? 'tree popdown-animated' : 'tree popup-animated'}  ${
+            !hidden ? 'hidden' : ''
+          }`}>
+          <Tree width="150px" height="150px" />
+        </span>
+        <span className={`${!flip ? 'tree popup-animated' : 'tree'} ${hidden2 ? 'hidden' : ''}`}>
           <Tree width="150px" height="150px" />
         </span>
         <span
-          className={`${!flip ? "tree popup-animated" : "tree"} ${
-            hidden2 ? "hidden" : ""
-          }`}
-        >
-          <Tree width="150px" height="150px" />
-        </span>
-        <span
-          className={`${
-            !flip ? "seedling popdown-animated" : "seedling popup-animated"
-          }  ${hidden ? "hidden" : ""}`}
-        >
+          className={`${!flip ? 'seedling popdown-animated' : 'seedling popup-animated'}  ${
+            hidden ? 'hidden' : ''
+          }`}>
           <Seedling width="150px" height="150px" />
         </span>
         <span
-          className={`${flip ? "seedling popup-animated" : "seedling"} ${
-            !hidden2 ? "hidden" : ""
-          }`}
-        >
+          className={`${flip ? 'seedling popup-animated' : 'seedling'} ${
+            !hidden2 ? 'hidden' : ''
+          }`}>
           <Seedling width="150px" height="150px" />
         </span>
       </section>
@@ -72,7 +63,7 @@ const AnimationContainer = styled.div`
   width: 400px;
   border-radius: 14px;
   position: relative;
-  background: ${({ hidden }) => (hidden ? "#89CFF0" : "#202A44")};
+  background: ${({ hidden }) => (hidden ? '#89CFF0' : '#202A44')};
   overflow: hidden;
   transition: 1s ease;
   transform: scale(0.8);
@@ -128,7 +119,7 @@ const AnimationContainer = styled.div`
     bottom: 90px;
     right: 150px;
     transform: rotate(-90deg) translateX(200px) rotate(90deg);
-    fill: ${({ hidden }) => (hidden ? "yellow" : "white")};
+    fill: ${({ hidden }) => (hidden ? 'yellow' : 'white')};
   }
 
   .daylight-animated {

@@ -1,18 +1,18 @@
-import { Button, Input, Stack } from "@mui/material";
-import { useEffect, useState } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { updateOrgTasks } from "../features/authOrg/authOrgSlice";
+import { Button, Input, Stack } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { updateOrgTasks } from '../features/authOrg/authOrgSlice';
 import {
   getTaskComments,
   createTaskComment,
-  resetComments,
-} from "../features/comment/commentSlice";
-import { createEmpTask, updateTask } from "../features/task/taskSlice";
+  resetComments
+} from '../features/comment/commentSlice';
+import { createEmpTask, updateTask } from '../features/task/taskSlice';
 
 const TaskDetail = ({ task, setFocusedTask }) => {
   const dispatch = useDispatch();
 
-  const [input, setInput] = useState("");
+  const [input, setInput] = useState('');
 
   const { employee } = useSelector((state) => state.authEmp);
   const { comments, isError, isSuccess, isLoading, message } = useSelector(
@@ -34,29 +34,27 @@ const TaskDetail = ({ task, setFocusedTask }) => {
     let newComment = {
       employee_id: employee.id,
       task_id: task.id,
-      content: comment,
+      content: comment
     };
 
-    if (comment !== "") {
+    if (comment !== '') {
       dispatch(createTaskComment(newComment)).then(() => {
-        console.log("hi");
-        setInput("");
+        console.log('hi');
+        setInput('');
       });
     }
   };
 
   const startTask = () => {
     let newTask = { ...task };
-    newTask.status = "in progress";
+    newTask.status = 'in progress';
     dispatch(updateTask(newTask))
       .unwrap()
       .then((updatedTask) => {
         setFocusedTask(updatedTask);
         dispatch(
           updateOrgTasks(
-            orgTasks.map((orgTask) =>
-              orgTask.id === updatedTask.id ? updatedTask : orgTask
-            )
+            orgTasks.map((orgTask) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
           )
         );
       });
@@ -65,16 +63,14 @@ const TaskDetail = ({ task, setFocusedTask }) => {
 
   const finishTask = () => {
     let newTask = { ...task };
-    newTask.status = "finished";
+    newTask.status = 'finished';
     dispatch(updateTask(newTask))
       .unwrap()
       .then((updatedTask) => {
         setFocusedTask(updatedTask);
         dispatch(
           updateOrgTasks(
-            orgTasks.map((orgTask) =>
-              orgTask.id === updatedTask.id ? updatedTask : orgTask
-            )
+            orgTasks.map((orgTask) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
           )
         );
       });
@@ -92,7 +88,7 @@ const TaskDetail = ({ task, setFocusedTask }) => {
       <p>{task.due_date}</p>
       {employee && (
         <Stack>
-          {task.status === "incomplete" ? (
+          {task.status === 'incomplete' ? (
             <Button onClick={startTask}>Start Task</Button>
           ) : (
             <Button onClick={finishTask}>Finish Task</Button>
@@ -104,8 +100,7 @@ const TaskDetail = ({ task, setFocusedTask }) => {
       <div className="comment-section">
         {comments.map((comment) => (
           <div className="task-comment">
-            {comment.employee.name}: {comment.content} | Posted at:{" "}
-            {comment.created_at}
+            {comment.employee.name}: {comment.content} | Posted at: {comment.created_at}
           </div>
         ))}
       </div>

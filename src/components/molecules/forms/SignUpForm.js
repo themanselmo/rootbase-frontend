@@ -1,13 +1,9 @@
-import React from "react";
-import { Stack } from "@mui/material";
-import Button from "@mui/material/Button";
-import { Input } from "@mui/material";
+import React from 'react';
+import { Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Input } from '@mui/material';
 
-const SignUpForm = ({
-  handleAuthChange,
-  handleAuthSubmit,
-  handleAuthState,
-}) => {
+const SignUpForm = ({ handleAuthChange, handleAuthSubmit, handleAuthState }) => {
   return (
     // Reset errors on component unmount
     <Stack>
@@ -30,7 +26,6 @@ const SignUpForm = ({
       <Button color="secondary" onClick={handleAuthState}>
         Log in
       </Button>
-      
     </Stack>
   );
 };

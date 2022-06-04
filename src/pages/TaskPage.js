@@ -1,12 +1,12 @@
-import SideNav from "../components/SideNav";
-import Button from "@mui/material/Button";
-import { useEffect, useState } from "react";
-import TaskDetail from "../components/TaskDetail";
-import NewTaskForm from "../components/NewTaskForm";
-import { useSelector, useDispatch } from "react-redux";
-import { getEmpTasks, resetTasks } from "../features/task/taskSlice";
-import { createTask, createGardenTask } from "../features/task/taskSlice";
-import { updateOrgTasks } from "../features/authOrg/authOrgSlice";
+import SideNav from '../components/SideNav';
+import Button from '@mui/material/Button';
+import { useEffect, useState } from 'react';
+import TaskDetail from '../components/TaskDetail';
+import NewTaskForm from '../components/NewTaskForm';
+import { useSelector, useDispatch } from 'react-redux';
+import { getEmpTasks, resetTasks } from '../features/task/taskSlice';
+import { createTask, createGardenTask } from '../features/task/taskSlice';
+import { updateOrgTasks } from '../features/authOrg/authOrgSlice';
 
 const TaskPage = () => {
   const dispatch = useDispatch();
@@ -48,7 +48,7 @@ const TaskPage = () => {
   const handleCreating = () => setCreating(!creating);
 
   const handleCreateTask = (newTask, selectedGarden) => {
-    newTask.status = "incomplete";
+    newTask.status = 'incomplete';
     dispatch(createTask(newTask))
       .unwrap()
       .then((createdTask) => {
@@ -63,7 +63,7 @@ const TaskPage = () => {
   const handleCreateGardenTask = (task, garden) => {
     let gardenTask = {
       garden_id: garden.id,
-      task_id: task.id,
+      task_id: task.id
     };
 
     dispatch(createGardenTask(gardenTask));

@@ -1,21 +1,17 @@
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
-import {
-  loginOrg,
-  registerOrg,
-  resetOrg,
-} from "../features/authOrg/authOrgSlice";
-import DayNightAnimation from "../components/molecules/DayNightAnimation";
-import LoginForm from "../components/molecules/forms/LoginForm";
-import SignUpForm from "../components/molecules/forms/SignUpForm";
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
+import { loginOrg, registerOrg, resetOrg } from '../features/authOrg/authOrgSlice';
+import DayNightAnimation from '../components/molecules/DayNightAnimation';
+import LoginForm from '../components/molecules/forms/LoginForm';
+import SignUpForm from '../components/molecules/forms/SignUpForm';
 
 const LoginPage = () => {
   const [loggingIn, setLoggingIn] = useState(true);
 
   const [formData, setFormData] = useState({
-    name: "",
-    password: "",
+    name: '',
+    password: ''
   });
 
   const { name, password } = formData;
@@ -31,7 +27,7 @@ const LoginPage = () => {
     seedToTree();
 
     if (isSuccess || organization) {
-      navigate("/");
+      navigate('/');
     }
 
     return () => {
@@ -46,7 +42,7 @@ const LoginPage = () => {
   const DayNightState = {
     flip,
     hidden,
-    hidden2,
+    hidden2
   };
 
   const seedToTree = () => {
@@ -60,7 +56,7 @@ const LoginPage = () => {
   const handleAuthChange = (e) => {
     setFormData((prevState) => ({
       ...prevState,
-      [e.target.name]: e.target.value,
+      [e.target.name]: e.target.value
     }));
   };
 
@@ -68,7 +64,7 @@ const LoginPage = () => {
     e.preventDefault();
     const userData = {
       name,
-      password,
+      password
     };
 
     loggingIn ? dispatch(loginOrg(userData)) : dispatch(registerOrg(userData));
@@ -97,7 +93,7 @@ const LoginPage = () => {
       {/* Takes in loading */}
       {/* {isError ? <p>{message}</p> : null} */}
       {/* Sign up/ Log in button at bottom */}
-      
+
       {loggingIn ? <LoginForm {...authProps} /> : <SignUpForm {...authProps} />}
     </div>
   );

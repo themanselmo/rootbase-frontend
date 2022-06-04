@@ -1,13 +1,8 @@
-import React from "react";
+import React from 'react';
 
-const PlantPot = ({ height = "20px", width = "20px" }) => {
+const PlantPot = ({ height = '20px', width = '20px' }) => {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      height={height}
-      width={width}
-      viewBox="0 0 612 612"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" height={height} width={width} viewBox="0 0 612 612">
       <g filter="url(#filter0_d_3_2)">
         <g filter="url(#filter1_d_3_2)">
           <path d="M68.207 202.64c0-12.337 10-22.338 22.338-22.338l425.165-.001c12.337 0 22.338 10 22.338 22.338v23.31c0 12.336-10 22.337-22.338 22.337h-15.219L468.58 466.89c-1.602 10.974-11.012 19.11-22.103 19.11H159.783c-11.091 0-20.501-8.136-22.103-19.11l-31.919-218.605H90.545c-12.337 0-22.338-9.999-22.338-22.337V202.64z"></path>
@@ -22,13 +17,8 @@ const PlantPot = ({ height = "20px", width = "20px" }) => {
           x="64.207"
           y="180.301"
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_3_2"
-            result="shape"
-          ></feBlend>
+          filterUnits="userSpaceOnUse">
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_3_2" result="shape"></feBlend>
         </filter>
         <filter
           id="filter1_d_3_2"
@@ -37,13 +27,8 @@ const PlantPot = ({ height = "20px", width = "20px" }) => {
           x="64.207"
           y="180.301"
           colorInterpolationFilters="sRGB"
-          filterUnits="userSpaceOnUse"
-        >
-          <feBlend
-            in="SourceGraphic"
-            in2="effect1_dropShadow_3_2"
-            result="shape"
-          ></feBlend>
+          filterUnits="userSpaceOnUse">
+          <feBlend in="SourceGraphic" in2="effect1_dropShadow_3_2" result="shape"></feBlend>
         </filter>
       </defs>
     </svg>

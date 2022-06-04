@@ -1,26 +1,24 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import authOrgService from "./authOrgService";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import authOrgService from './authOrgService';
 
-const organization = JSON.parse(localStorage.getItem("organization"));
+const organization = JSON.parse(localStorage.getItem('organization'));
 
 const initialState = {
   organization: organization ? organization : null,
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
+  message: ''
 };
 
 export const registerOrg = createAsyncThunk(
-  "authOrg/registerOrg",
+  'authOrg/registerOrg',
   async (organization, thunkAPI) => {
     try {
       return await authOrgService.registerOrg(organization);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -28,47 +26,42 @@ export const registerOrg = createAsyncThunk(
   }
 );
 
-export const loginOrg = createAsyncThunk(
-  "authOrg/loginOrg",
-  async (organization, thunkAPI) => {
-    try {
-      return await authOrgService.loginOrg(organization);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const loginOrg = createAsyncThunk('authOrg/loginOrg', async (organization, thunkAPI) => {
+  try {
+    return await authOrgService.loginOrg(organization);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
-export const logoutOrg = createAsyncThunk("authOrg/logoutOrg", async () => {
+export const logoutOrg = createAsyncThunk('authOrg/logoutOrg', async () => {
   await authOrgService.logoutOrg();
 });
 
 export const authOrgSlice = createSlice({
-  name: "authOrg",
+  name: 'authOrg',
   initialState,
   reducers: {
     resetOrg: (state) => {
       state.isLoading = false;
       state.isError = false;
       state.isSuccess = false;
-      state.message = "";
+      state.message = '';
     },
     updateOrgGardens: (state, action) => {
       const newOrg = { ...state.organization, gardens: action.payload };
       state.organization = newOrg;
-      localStorage.setItem("organization", JSON.stringify(newOrg));
+      localStorage.setItem('organization', JSON.stringify(newOrg));
     },
     updateOrgTasks: (state, action) => {
       const newOrg = { ...state.organization, tasks: action.payload };
       state.organization = newOrg;
-      localStorage.setItem("organization", JSON.stringify(newOrg));
-    },
+      localStorage.setItem('organization', JSON.stringify(newOrg));
+    }
   },
 
   extraReducers: (builder) => {
@@ -102,10 +95,9 @@ export const authOrgSlice = createSlice({
         state.isError = true;
         state.message = action.payload;
       });
-  },
+  }
 });
 
-export const { resetOrg, updateOrgGardens, updateOrgTasks } =
-  authOrgSlice.actions;
+export const { resetOrg, updateOrgGardens, updateOrgTasks } = authOrgSlice.actions;
 
 export default authOrgSlice.reducer;

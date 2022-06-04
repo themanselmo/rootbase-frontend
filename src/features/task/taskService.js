@@ -1,6 +1,6 @@
-import axios from "axios";
+import axios from 'axios';
 
-const API_URL = "/";
+const API_URL = '/';
 
 // Create standard task
 const createTask = async (taskData) => {
@@ -38,7 +38,7 @@ const createGardenTask = async (gardenTaskData) => {
 const getEmpTasks = async () => {
   const response = await axios.get(API_URL + `my_tasks`);
   if (response.data) {
-    return response.data.map((taskResponse) => taskResponse.task)
+    return response.data.map((taskResponse) => taskResponse.task);
   }
   return response.data;
 };
@@ -56,7 +56,7 @@ const taskService = {
   createGardenTask,
   createTask,
   updateTask,
-  createEmpTask,
+  createEmpTask
 };
 
 export default taskService;

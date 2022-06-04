@@ -1,7 +1,7 @@
-import React from "react";
-import { Stack } from "@mui/material";
-import Button from "@mui/material/Button";
-import { Input } from "@mui/material";
+import React from 'react';
+import { Stack } from '@mui/material';
+import Button from '@mui/material/Button';
+import { Input } from '@mui/material';
 
 const LoginForm = ({ handleAuthChange, handleAuthSubmit, handleAuthState }) => {
   // Reset errors on component unmount

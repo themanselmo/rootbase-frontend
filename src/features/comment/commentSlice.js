@@ -1,24 +1,22 @@
-import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import commentService from "./commentService";
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import commentService from './commentService';
 
 const initialState = {
   comments: [],
   isLoading: false,
   isSuccess: false,
   isError: false,
-  message: "",
+  message: ''
 };
 
 export const getTaskComments = createAsyncThunk(
-  "comments/getTaskComments",
+  'comments/getTaskComments',
   async (taskId, thunkAPI) => {
     try {
       return await commentService.getTaskComments(taskId);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -27,15 +25,13 @@ export const getTaskComments = createAsyncThunk(
 );
 
 export const createTaskComment = createAsyncThunk(
-  "comments/createTaskComments",
+  'comments/createTaskComments',
   async (taskCommentData, thunkAPI) => {
     try {
       return await commentService.createTaskComment(taskCommentData);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -44,10 +40,10 @@ export const createTaskComment = createAsyncThunk(
 );
 
 const commentSlice = createSlice({
-  name: "comments",
+  name: 'comments',
   initialState,
   reducers: {
-    resetComments: (state) => initialState,
+    resetComments: (state) => initialState
   },
   extraReducers: (builder) => {
     builder
@@ -75,7 +71,7 @@ const commentSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       });
-  },
+  }
 });
 
 export const { resetComments } = commentSlice.actions;

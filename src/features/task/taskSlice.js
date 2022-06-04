@@ -1,61 +1,49 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import taskService from "./taskService";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import taskService from './taskService';
 
 const initialState = {
   tasks: [],
   isLoading: false,
   isSuccess: false,
   isError: false,
-  message: "",
+  message: ''
 };
 
 // Create standard task
-export const createTask = createAsyncThunk(
-  "tasks/createTask",
-  async (taskData, thunkAPI) => {
-    try {
-      return await taskService.createTask(taskData);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const createTask = createAsyncThunk('tasks/createTask', async (taskData, thunkAPI) => {
+  try {
+    return await taskService.createTask(taskData);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 // Update standard task
-export const updateTask = createAsyncThunk(
-  "tasks/updateTask",
-  async (taskData, thunkAPI) => {
-    try {
-      return await taskService.updateTask(taskData);
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const updateTask = createAsyncThunk('tasks/updateTask', async (taskData, thunkAPI) => {
+  try {
+    return await taskService.updateTask(taskData);
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 // Get garden tasks
 export const getGardenTasks = createAsyncThunk(
-  "tasks/getGardenTasks",
+  'tasks/getGardenTasks',
   async (gardenId, thunkAPI) => {
     try {
       return await taskService.getGardenTasks(gardenId);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -65,15 +53,13 @@ export const getGardenTasks = createAsyncThunk(
 
 // Create garden task
 export const createGardenTask = createAsyncThunk(
-  "tasks/createGardenTasks",
+  'tasks/createGardenTasks',
   async (gardenTaskData, thunkAPI) => {
     try {
       return await taskService.createGardenTask(gardenTaskData);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -82,34 +68,27 @@ export const createGardenTask = createAsyncThunk(
 );
 
 // Get employee tasks
-export const getEmpTasks = createAsyncThunk(
-  "tasks/getEmpTasks",
-  async (_, thunkAPI) => {
-    try {
-      return await taskService.getEmpTasks();
-    } catch (error) {
-      const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
-    }
+export const getEmpTasks = createAsyncThunk('tasks/getEmpTasks', async (_, thunkAPI) => {
+  try {
+    return await taskService.getEmpTasks();
+  } catch (error) {
+    const message =
+      (error.response && error.response.data && error.response.data.message) ||
+      error.message ||
+      error.toString();
+    return thunkAPI.rejectWithValue(message);
   }
-);
+});
 
 // Create employee task
 export const createEmpTask = createAsyncThunk(
-  "tasks/createEmpTask",
+  'tasks/createEmpTask',
   async (empTaskData, thunkAPI) => {
     try {
       return await taskService.createEmpTask(empTaskData);
     } catch (error) {
       const message =
-        (error.response &&
-          error.response.data &&
-          error.response.data.message) ||
+        (error.response && error.response.data && error.response.data.message) ||
         error.message ||
         error.toString();
       return thunkAPI.rejectWithValue(message);
@@ -118,10 +97,10 @@ export const createEmpTask = createAsyncThunk(
 );
 
 const taskSlice = createSlice({
-  name: "tasks",
+  name: 'tasks',
   initialState,
   reducers: {
-    resetTasks: (state) => initialState,
+    resetTasks: (state) => initialState
   },
   extraReducers: (builder) => {
     builder
@@ -193,7 +172,7 @@ const taskSlice = createSlice({
       .addCase(updateTask.fulfilled, (state, action) => {
         state.isSuccess = true;
         state.isLoading = false;
-        if (action.payload.status === "in progress") {
+        if (action.payload.status === 'in progress') {
           state.tasks.push(action.payload);
         } else {
           state.tasks = state.tasks.map((stateTask) =>
@@ -205,7 +184,7 @@ const taskSlice = createSlice({
         state.isLoading = false;
         state.isError = true;
       });
-  },
+  }
 });
 
 export const { resetTasks } = taskSlice.actions;

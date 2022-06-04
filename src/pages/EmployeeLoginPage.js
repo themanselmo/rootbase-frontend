@@ -1,14 +1,11 @@
-import SideNav from "../components/SideNav";
-import LoginTopNav from "../components/LoginTopNav";
-import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
-import { useDispatch, useSelector } from "react-redux";
-import NewEmployeeForm from "../components/NewEmployeeForm";
-import { loginEmp, registerEmp } from "../features/authEmp/authEmpSlice";
-import {
-  getOrgEmployees,
-  resetOrgEmployees,
-} from "../features/orgEmployees/orgEmployeesSlice";
+import SideNav from '../components/SideNav';
+import LoginTopNav from '../components/LoginTopNav';
+import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router';
+import { useDispatch, useSelector } from 'react-redux';
+import NewEmployeeForm from '../components/NewEmployeeForm';
+import { loginEmp, registerEmp } from '../features/authEmp/authEmpSlice';
+import { getOrgEmployees, resetOrgEmployees } from '../features/orgEmployees/orgEmployeesSlice';
 import {
   Button,
   Input,
@@ -16,9 +13,9 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-} from "@mui/material";
-import { DirectUpload } from "activestorage";
+  DialogTitle
+} from '@mui/material';
+import { DirectUpload } from 'activestorage';
 
 const EmployeeLoginPage = () => {
   const dispatch = useDispatch();
@@ -31,13 +28,13 @@ const EmployeeLoginPage = () => {
     isLoading,
     isError,
     isSuccess: isSuccessGetOrgEmployees,
-    message,
+    message
   } = useSelector((state) => state.orgEmployees);
 
   const [creating, setCreating] = useState(false);
 
   const [open, setOpen] = useState(false);
-  const [pin, setPin] = useState("");
+  const [pin, setPin] = useState('');
   const [currentEID, setCurrentEID] = useState(null);
 
   useEffect(() => {
@@ -46,7 +43,7 @@ const EmployeeLoginPage = () => {
     }
 
     if (isSuccessAuthEmp) {
-      navigate("/");
+      navigate('/');
     }
 
     dispatch(getOrgEmployees());
@@ -80,14 +77,11 @@ const EmployeeLoginPage = () => {
 
     dispatch(loginEmp(empData));
 
-    navigate("/");
+    navigate('/');
   };
 
   const handleCreateEmp = (formData) => {
-    const upload = new DirectUpload(
-      formData.avatar,
-      "/rails/active_storage/direct_uploads"
-    );
+    const upload = new DirectUpload(formData.avatar, '/rails/active_storage/direct_uploads');
     upload.create((error, blob) => {
       if (error) {
         console.log(error);
@@ -96,7 +90,7 @@ const EmployeeLoginPage = () => {
           name: formData.name,
           pin: formData.pin,
           avatar: blob.signed_id,
-          organization_id: organization.id,
+          organization_id: organization.id
         };
 
         dispatch(registerEmp(empData));
@@ -114,24 +108,17 @@ const EmployeeLoginPage = () => {
       <div id="employee-login-content">
         <LoginTopNav organization={organization} />
         {creating ? (
-          <NewEmployeeForm
-            handleCreating={handleCreating}
-            handleCreateEmployee={handleCreateEmp}
-          />
+          <NewEmployeeForm handleCreating={handleCreating} handleCreateEmployee={handleCreateEmp} />
         ) : (
           <div id="employee-list-content">
             <p>Select your name from the list below</p>
             <p>
-              Don't see yourself?{" "}
-              <Button onClick={handleCreating}>Create</Button> a new employee
+              Don't see yourself? <Button onClick={handleCreating}>Create</Button> a new employee
             </p>
             {orgEmployees && (
               <div id="employees">
                 {orgEmployees.map((employee) => (
-                  <div
-                    className="employee-card"
-                    onClick={() => handleClickOpen(employee.id)}
-                  >
+                  <div className="employee-card" onClick={() => handleClickOpen(employee.id)}>
                     <p>{employee.name}</p>
                     <p>{employee.name}@rootbase.com</p>
                   </div>
@@ -147,9 +134,7 @@ const EmployeeLoginPage = () => {
       <Dialog open={open} onClose={handleClose}>
         <DialogTitle>Log In</DialogTitle>
         <DialogContent>
-          <DialogContentText>
-            To log in, please enter your pin.
-          </DialogContentText>
+          <DialogContentText>To log in, please enter your pin.</DialogContentText>
           <Input autoFocus onChange={handleChange} />
         </DialogContent>
         <DialogActions>
