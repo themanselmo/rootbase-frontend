@@ -3,7 +3,7 @@ import LoginTopNav from '../components/LoginTopNav';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router';
 import { useDispatch, useSelector } from 'react-redux';
-import NewEmployeeForm from '../components/NewEmployeeForm';
+import NewEmployeeForm from '../components/molecules/forms/NewEmployeeForm';
 import { loginEmp, registerEmp } from '../features/authEmp/authEmpSlice';
 import { getOrgEmployees, resetOrgEmployees } from '../features/orgEmployees/orgEmployeesSlice';
 import {
@@ -15,20 +15,22 @@ import {
   DialogContentText,
   DialogTitle
 } from '@mui/material';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'acti... Remove this comment to see the full error message
 import { DirectUpload } from 'activestorage';
 
 const EmployeeLoginPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { organization } = useSelector((state) => state.authOrg);
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { isSuccess: isSuccessAuthEmp } = useSelector((state) => state.authEmp);
   const {
     orgEmployees,
-    isLoading,
     isError,
-    isSuccess: isSuccessGetOrgEmployees,
     message
+    // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   } = useSelector((state) => state.orgEmployees);
 
   const [creating, setCreating] = useState(false);
@@ -46,6 +48,7 @@ const EmployeeLoginPage = () => {
       navigate('/');
     }
 
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(getOrgEmployees());
 
     return () => {
@@ -54,7 +57,7 @@ const EmployeeLoginPage = () => {
     };
   }, [isError, isSuccessAuthEmp, message, navigate, dispatch]);
 
-  const handleClickOpen = (EID) => {
+  const handleClickOpen = (EID: any) => {
     setCurrentEID(EID);
     setOpen(true);
   };
@@ -68,21 +71,22 @@ const EmployeeLoginPage = () => {
     handleClose();
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setPin(e.target.value);
   };
 
-  const handleLoginEmp = (employee_id) => {
+  const handleLoginEmp = (employee_id: any) => {
     const empData = { id: employee_id, pin: pin };
 
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(loginEmp(empData));
 
     navigate('/');
   };
 
-  const handleCreateEmp = (formData) => {
+  const handleCreateEmp = (formData: any) => {
     const upload = new DirectUpload(formData.avatar, '/rails/active_storage/direct_uploads');
-    upload.create((error, blob) => {
+    upload.create((error: any, blob: any) => {
       if (error) {
         console.log(error);
       } else {
@@ -93,6 +97,7 @@ const EmployeeLoginPage = () => {
           organization_id: organization.id
         };
 
+        // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
         dispatch(registerEmp(empData));
       }
     });
@@ -113,12 +118,16 @@ const EmployeeLoginPage = () => {
           <div id="employee-list-content">
             <p>Select your name from the list below</p>
             <p>
-              Don't see yourself? <Button onClick={handleCreating}>Create</Button> a new employee
+              Don&apos;t see yourself? <Button onClick={handleCreating}>Create</Button> a new
+              employee
             </p>
             {orgEmployees && (
               <div id="employees">
-                {orgEmployees.map((employee) => (
-                  <div className="employee-card" onClick={() => handleClickOpen(employee.id)}>
+                {orgEmployees.map((employee: any) => (
+                  <div
+                    key={employee.id}
+                    className="employee-card"
+                    onClick={() => handleClickOpen(employee.id)}>
                     <p>{employee.name}</p>
                     <p>{employee.name}@rootbase.com</p>
                   </div>

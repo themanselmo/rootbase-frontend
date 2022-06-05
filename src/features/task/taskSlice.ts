@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import taskService from './taskService';
 
 const initialState = {
@@ -14,11 +15,15 @@ export const createTask = createAsyncThunk('tasks/createTask', async (taskData, 
   try {
     return await taskService.createTask(taskData);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -27,11 +32,15 @@ export const updateTask = createAsyncThunk('tasks/updateTask', async (taskData, 
   try {
     return await taskService.updateTask(taskData);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -42,11 +51,15 @@ export const getGardenTasks = createAsyncThunk(
     try {
       return await taskService.getGardenTasks(gardenId);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -58,11 +71,15 @@ export const createGardenTask = createAsyncThunk(
     try {
       return await taskService.createGardenTask(gardenTaskData);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -72,11 +89,15 @@ export const getEmpTasks = createAsyncThunk('tasks/getEmpTasks', async (_, thunk
   try {
     return await taskService.getEmpTasks();
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -87,11 +108,15 @@ export const createEmpTask = createAsyncThunk(
     try {
       return await taskService.createEmpTask(empTaskData);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -100,14 +125,14 @@ const taskSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    resetTasks: (state) => initialState
+    resetTasks: () => initialState
   },
   extraReducers: (builder) => {
     builder
       .addCase(createTask.pending, (state) => {
         state.isLoading = true;
       })
-      .addCase(createTask.fulfilled, (state, action) => {
+      .addCase(createTask.fulfilled, (state) => {
         state.isSuccess = true;
         state.isLoading = false;
       })
@@ -173,9 +198,12 @@ const taskSlice = createSlice({
         state.isSuccess = true;
         state.isLoading = false;
         if (action.payload.status === 'in progress') {
+          // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
           state.tasks.push(action.payload);
         } else {
+          // @ts-expect-error ts-migrate(2322) FIXME: Type 'any[]' is not assignable to type 'never[]'.
           state.tasks = state.tasks.map((stateTask) =>
+            // @ts-expect-error ts-migrate(2339) FIXME: Property 'id' does not exist on type 'never'.
             stateTask.id === action.payload.id ? action.payload : stateTask
           );
         }

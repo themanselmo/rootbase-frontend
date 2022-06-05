@@ -4,14 +4,14 @@ import Button from '@mui/material/Button';
 
 import { useState } from 'react';
 
-const NewEmployeeForm = ({ handleCreating, handleCreateEmployee }) => {
+const NewEmployeeForm = ({ handleCreating, handleCreateEmployee }: any) => {
   const [formData, setFormData] = useState({
     name: '',
     pin: '',
     avatar: {}
   });
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     if (e.target.name === 'avatar') {
       setFormData({ ...formData, [e.target.name]: e.target.files[0] });
     } else {

@@ -9,20 +9,24 @@ import {
 } from '../features/comment/commentSlice';
 import { createEmpTask, updateTask } from '../features/task/taskSlice';
 
-const TaskDetail = ({ task, setFocusedTask }) => {
+const TaskDetail = ({ task, setFocusedTask }: any) => {
   const dispatch = useDispatch();
 
   const [input, setInput] = useState('');
 
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { employee } = useSelector((state) => state.authEmp);
-  const { comments, isError, isSuccess, isLoading, message } = useSelector(
+  const { comments } = useSelector(
+    // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
     (state) => state.comments
   );
 
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { organization } = useSelector((state) => state.authOrg);
   const orgTasks = organization.tasks;
 
   useEffect(() => {
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(getTaskComments(task.id));
 
     return () => {
@@ -30,7 +34,7 @@ const TaskDetail = ({ task, setFocusedTask }) => {
     };
   }, [dispatch, task.id]);
 
-  const postComment = (comment) => {
+  const postComment = (comment: any) => {
     let newComment = {
       employee_id: employee.id,
       task_id: task.id,
@@ -38,6 +42,7 @@ const TaskDetail = ({ task, setFocusedTask }) => {
     };
 
     if (comment !== '') {
+      // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
       dispatch(createTaskComment(newComment)).then(() => {
         console.log('hi');
         setInput('');
@@ -48,35 +53,38 @@ const TaskDetail = ({ task, setFocusedTask }) => {
   const startTask = () => {
     let newTask = { ...task };
     newTask.status = 'in progress';
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(updateTask(newTask))
       .unwrap()
-      .then((updatedTask) => {
+      .then((updatedTask: any) => {
         setFocusedTask(updatedTask);
         dispatch(
           updateOrgTasks(
-            orgTasks.map((orgTask) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
+            orgTasks.map((orgTask: any) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
           )
         );
       });
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(createEmpTask({ employee_id: employee.id, task_id: task.id }));
   };
 
   const finishTask = () => {
     let newTask = { ...task };
     newTask.status = 'finished';
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     dispatch(updateTask(newTask))
       .unwrap()
-      .then((updatedTask) => {
+      .then((updatedTask: any) => {
         setFocusedTask(updatedTask);
         dispatch(
           updateOrgTasks(
-            orgTasks.map((orgTask) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
+            orgTasks.map((orgTask: any) => (orgTask.id === updatedTask.id ? updatedTask : orgTask))
           )
         );
       });
   };
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     setInput(e.target.value);
   };
 
@@ -98,8 +106,8 @@ const TaskDetail = ({ task, setFocusedTask }) => {
         </Stack>
       )}
       <div className="comment-section">
-        {comments.map((comment) => (
-          <div className="task-comment">
+        {comments.map((comment: any) => (
+          <div key={comment.id} className="task-comment">
             {comment.employee.name}: {comment.content} | Posted at: {comment.created_at}
           </div>
         ))}

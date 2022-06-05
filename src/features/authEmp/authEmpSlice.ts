@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import authEmpService from './authEmpService';
 
+// @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | null' is not assignable... Remove this comment to see the full error message
 const employee = JSON.parse(localStorage.getItem('employee'));
 
 const initialState = {
@@ -15,11 +17,15 @@ export const registerEmp = createAsyncThunk('authEmp/registerEmp', async (employ
   try {
     return await authEmpService.registerEmp(employee);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -27,11 +33,15 @@ export const loginEmp = createAsyncThunk('authEmp/loginEmp', async (employee, th
   try {
     return await authEmpService.loginEmp(employee);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -39,11 +49,15 @@ export const logoutEmp = createAsyncThunk('authEmp/logoutEmp', async (_, thunkAP
   try {
     return await authEmpService.logoutEmp();
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -51,11 +65,15 @@ export const editEmp = createAsyncThunk('authEmp/editEmp', async (employee, thun
   try {
     return await authEmpService.editEmp(employee);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -84,6 +102,7 @@ export const authEmpSlice = createSlice({
       .addCase(registerEmp.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       })
       .addCase(logoutEmp.fulfilled, (state) => {
@@ -100,6 +119,7 @@ export const authEmpSlice = createSlice({
       .addCase(loginEmp.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       })
       .addCase(editEmp.pending, (state) => {
@@ -113,6 +133,7 @@ export const authEmpSlice = createSlice({
       .addCase(editEmp.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       });
   }

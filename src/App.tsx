@@ -14,6 +14,7 @@ import LoginPage from './pages/LoginPage';
 import EmployeeLoginPage from './pages/EmployeeLoginPage';
 
 function App() {
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { organization } = useSelector((state) => state.authOrg);
   return (
     <>

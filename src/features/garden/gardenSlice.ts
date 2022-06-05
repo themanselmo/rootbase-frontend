@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import gardenService from './gardenService';
 
 const initialState = {
@@ -14,11 +15,15 @@ export const createGarden = createAsyncThunk('gardens/create', async (gardenData
   try {
     return await gardenService.createGarden(gardenData);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -26,7 +31,7 @@ export const gardenSlice = createSlice({
   name: 'gardens',
   initialState,
   reducers: {
-    resetGardens: (state) => initialState,
+    resetGardens: () => initialState,
     getOrgGardens: (state, action) => {
       state.gardens = action.payload;
     }
@@ -39,6 +44,7 @@ export const gardenSlice = createSlice({
       .addCase(createGarden.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isSuccess = true;
+        // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
         state.gardens.push(action.payload);
       })
       .addCase(createGarden.rejected, (state) => {

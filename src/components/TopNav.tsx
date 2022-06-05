@@ -2,7 +2,6 @@ import { Button } from '@mui/material';
 import { useNavigate } from 'react-router';
 import { useSelector, useDispatch } from 'react-redux';
 import { logoutEmp, resetEmp } from '../features/authEmp/authEmpSlice';
-import { resetTasks } from '../features/task/taskSlice';
 
 const TopNav = () => {
   const currentDate = new Date();
@@ -13,10 +12,13 @@ const TopNav = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { organization } = useSelector((state) => state.authOrg);
+  // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
   const { employee } = useSelector((state) => state.authEmp);
 
   const onLogout = () => {
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<void, void, {}>... Remove this comment to see the full error message
     dispatch(logoutEmp());
     dispatch(resetEmp());
     navigate('/');

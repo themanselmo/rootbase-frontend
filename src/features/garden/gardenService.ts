@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const API_URL = '/gardens';
 
-const createGarden = async (gardenData) => {
+const createGarden = async (gardenData: any) => {
   const response = await axios.post(API_URL, gardenData);
 
   return response.data;

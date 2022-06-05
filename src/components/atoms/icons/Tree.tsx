@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Tree = ({ height = '20px', width = '20px' }) => {
+const Tree = ({ height = '20px', width = '20px' }: { height: string; width: string }) => {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

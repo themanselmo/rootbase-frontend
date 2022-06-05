@@ -1,11 +1,12 @@
 import React from 'react';
+// @ts-expect-error ts-migrate(7016) FIXME: Could not find a declaration file for module 'styl... Remove this comment to see the full error message
 import styled from 'styled-components';
 import Circle from '../atoms/icons/Circle';
 import PlantPot from '../atoms/icons/PlantPot';
 import Seedling from '../atoms/icons/Seedling';
 import Tree from '../atoms/icons/Tree';
 
-const DayNightAnimation = ({ flip, hidden, hidden2 }) => {
+const DayNightAnimation = ({ flip, hidden, hidden2 }: any) => {
   return (
     <AnimationContainer hidden={hidden}>
       <span
@@ -63,7 +64,7 @@ const AnimationContainer = styled.div`
   width: 400px;
   border-radius: 14px;
   position: relative;
-  background: ${({ hidden }) => (hidden ? '#89CFF0' : '#202A44')};
+  background: ${({ hidden }: any) => (hidden ? '#89CFF0' : '#202A44')};
   overflow: hidden;
   transition: 1s ease;
   transform: scale(0.8);
@@ -119,7 +120,7 @@ const AnimationContainer = styled.div`
     bottom: 90px;
     right: 150px;
     transform: rotate(-90deg) translateX(200px) rotate(90deg);
-    fill: ${({ hidden }) => (hidden ? 'yellow' : 'white')};
+    fill: ${({ hidden }: any) => (hidden ? 'yellow' : 'white')};
   }
 
   .daylight-animated {

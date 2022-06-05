@@ -3,14 +3,14 @@ import axios from 'axios';
 const API_URL = '/';
 
 // Get task comments
-const getTaskComments = async (taskId) => {
+const getTaskComments = async (taskId: any) => {
   const response = await axios.get(API_URL + `comments/${taskId}`);
 
   return response.data;
 };
 
 // Create task comment
-const createTaskComment = async (taskCommentData) => {
+const createTaskComment = async (taskCommentData: any) => {
   const response = await axios.post(API_URL + `comments`, taskCommentData);
 
   return response.data;

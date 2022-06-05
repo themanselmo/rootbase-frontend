@@ -1,6 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import authOrgService from './authOrgService';
 
+// @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | null' is not assignable... Remove this comment to see the full error message
 const organization = JSON.parse(localStorage.getItem('organization'));
 
 const initialState = {
@@ -17,11 +19,15 @@ export const registerOrg = createAsyncThunk(
     try {
       return await authOrgService.registerOrg(organization);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -30,11 +36,15 @@ export const loginOrg = createAsyncThunk('authOrg/loginOrg', async (organization
   try {
     return await authOrgService.loginOrg(organization);
   } catch (error) {
-    const message =
-      (error.response && error.response.data && error.response.data.message) ||
-      error.message ||
-      error.toString();
-    return thunkAPI.rejectWithValue(message);
+    const hasErrResponse =
+      (error as errorInterface).response?.data?.message ||
+      (error as errorInterface).message ||
+      (error as errorInterface).toString();
+
+    if (!hasErrResponse) {
+      throw error;
+    }
+    return thunkAPI.rejectWithValue(hasErrResponse);
   }
 });
 
@@ -77,6 +87,7 @@ export const authOrgSlice = createSlice({
       .addCase(registerOrg.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       })
       .addCase(logoutOrg.fulfilled, (state) => {
@@ -93,6 +104,7 @@ export const authOrgSlice = createSlice({
       .addCase(loginOrg.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       });
   }

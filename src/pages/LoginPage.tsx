@@ -20,6 +20,7 @@ const LoginPage = () => {
   const dispatch = useDispatch();
 
   const { organization, isLoading, isError, isSuccess, message } = useSelector(
+    // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
     (state) => state.authOrg
   );
 
@@ -53,20 +54,21 @@ const LoginPage = () => {
     }, 1000);
   };
 
-  const handleAuthChange = (e) => {
+  const handleAuthChange = (e: any) => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
     }));
   };
 
-  const handleAuthSubmit = (e) => {
+  const handleAuthSubmit = (e: any) => {
     e.preventDefault();
     const userData = {
       name,
       password
     };
 
+    // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'AsyncThunkAction<any, void, {}>'... Remove this comment to see the full error message
     loggingIn ? dispatch(loginOrg(userData)) : dispatch(registerOrg(userData));
   };
 

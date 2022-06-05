@@ -1,6 +1,6 @@
 import React from 'react';
 
-const PlantPot = ({ height = '20px', width = '20px' }) => {
+const PlantPot = ({ height = '20px', width = '20px' }: { height: string; width: string }) => {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" height={height} width={width} viewBox="0 0 612 612">
       <g filter="url(#filter0_d_3_2)">

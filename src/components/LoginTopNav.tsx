@@ -1,4 +1,4 @@
-const LoginTopNav = ({ organization }) => {
+const LoginTopNav = ({ organization }: any) => {
   const currentDate = new Date();
   let cDay = currentDate.getDate();
   let cMonth = currentDate.getMonth() + 1;

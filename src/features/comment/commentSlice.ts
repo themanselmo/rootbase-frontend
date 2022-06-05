@@ -1,4 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import commentService from './commentService';
 
 const initialState = {
@@ -15,11 +16,15 @@ export const getTaskComments = createAsyncThunk(
     try {
       return await commentService.getTaskComments(taskId);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -30,11 +35,15 @@ export const createTaskComment = createAsyncThunk(
     try {
       return await commentService.createTaskComment(taskCommentData);
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -43,14 +52,16 @@ const commentSlice = createSlice({
   name: 'comments',
   initialState,
   reducers: {
-    resetComments: (state) => initialState
+    resetComments: () => initialState
   },
   extraReducers: (builder) => {
     builder
       .addCase(getTaskComments.pending, (state) => {
+        // @ts-expect-error ts-migrate(2551) FIXME: Property 'loading' does not exist on type 'Writabl... Remove this comment to see the full error message
         state.loading = true;
       })
       .addCase(getTaskComments.fulfilled, (state, action) => {
+        // @ts-expect-error ts-migrate(2551) FIXME: Property 'loading' does not exist on type 'Writabl... Remove this comment to see the full error message
         state.loading = false;
         state.isSuccess = true;
         state.comments = action.payload;
@@ -60,11 +71,14 @@ const commentSlice = createSlice({
         state.isError = true;
       })
       .addCase(createTaskComment.pending, (state) => {
+        // @ts-expect-error ts-migrate(2551) FIXME: Property 'loading' does not exist on type 'Writabl... Remove this comment to see the full error message
         state.loading = true;
       })
       .addCase(createTaskComment.fulfilled, (state, action) => {
+        // @ts-expect-error ts-migrate(2551) FIXME: Property 'loading' does not exist on type 'Writabl... Remove this comment to see the full error message
         state.loading = false;
         state.isSuccess = true;
+        // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'any' is not assignable to parame... Remove this comment to see the full error message
         state.comments.push(action.payload);
       })
       .addCase(createTaskComment.rejected, (state) => {

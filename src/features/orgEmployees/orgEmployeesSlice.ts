@@ -1,4 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import errorInterface from '../../components/interfaces/error';
 import orgEmployeesService from './orgEmployeesService';
 
 const initialState = {
@@ -15,11 +16,15 @@ export const getOrgEmployees = createAsyncThunk(
     try {
       return await orgEmployeesService.getOrgEmployees();
     } catch (error) {
-      const message =
-        (error.response && error.response.data && error.response.data.message) ||
-        error.message ||
-        error.toString();
-      return thunkAPI.rejectWithValue(message);
+      const hasErrResponse =
+        (error as errorInterface).response?.data?.message ||
+        (error as errorInterface).message ||
+        (error as errorInterface).toString();
+
+      if (!hasErrResponse) {
+        throw error;
+      }
+      return thunkAPI.rejectWithValue(hasErrResponse);
     }
   }
 );
@@ -28,7 +33,7 @@ export const orgEmployeesSlice = createSlice({
   name: 'orgEmployees',
   initialState,
   reducers: {
-    resetOrgEmployees: (state) => initialState
+    resetOrgEmployees: () => initialState
   },
 
   extraReducers: (builder) => {
@@ -44,6 +49,7 @@ export const orgEmployeesSlice = createSlice({
       .addCase(getOrgEmployees.rejected, (state, action) => {
         state.isLoading = false;
         state.isError = true;
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'unknown' is not assignable to type 'string'.
         state.message = action.payload;
       });
   }

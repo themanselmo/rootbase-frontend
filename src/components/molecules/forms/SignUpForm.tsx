@@ -3,7 +3,7 @@ import { Stack } from '@mui/material';
 import Button from '@mui/material/Button';
 import { Input } from '@mui/material';
 
-const SignUpForm = ({ handleAuthChange, handleAuthSubmit, handleAuthState }) => {
+const SignUpForm = ({ handleAuthChange, handleAuthSubmit, handleAuthState }: any) => {
   return (
     // Reset errors on component unmount
     <Stack>

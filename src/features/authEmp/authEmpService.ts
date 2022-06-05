@@ -1,9 +1,8 @@
 import axios from 'axios';
-import { Navigate } from 'react-router-dom';
 
 const API_URL = '/';
 
-const registerEmp = async (employee) => {
+const registerEmp = async (employee: any) => {
   const response = await axios.post(API_URL + 'employees', employee);
 
   if (response.data) {
@@ -18,7 +17,7 @@ const registerEmp = async (employee) => {
   return response.data;
 };
 
-const loginEmp = async (userData) => {
+const loginEmp = async (userData: any) => {
   const response = await axios.post(API_URL + 'login_employee', userData);
 
   if (response.data) {
@@ -39,7 +38,7 @@ const logoutEmp = async () => {
   return;
 };
 
-const editEmp = async (userData) => {
+const editEmp = async (userData: any) => {
   const response = await axios.put(API_URL + `employees/${userData.id}`, {
     avatar: userData.avatar
   });

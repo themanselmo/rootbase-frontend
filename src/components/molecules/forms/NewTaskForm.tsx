@@ -1,23 +1,12 @@
 // component imports
-import {
-  Stack,
-  Input,
-  Select,
-  MenuItem,
-  FormControl,
-  Snackbar,
-  Grow,
-  InputLabel
-} from '@mui/material';
+import { Stack, Input, Select, MenuItem, FormControl, Snackbar, Grow } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 
 import Button from '@mui/material/Button';
-import { Checkbox } from '@mui/material';
-import { FormControlLabel } from '@mui/material';
 
 import { useState } from 'react';
 
-const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
+const NewTaskForm = ({ handleCreateTask, gardens }: any) => {
   const [formData, setFormData] = useState({
     name: '',
     due_date: ''
@@ -26,10 +15,11 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
   const [gardenName, setGardenName] = useState({});
 
   const [open, setOpen] = useState(false);
+  // @ts-expect-error ts-migrate(2345) FIXME: Argument of type '(props: GrowProps) => Element' i... Remove this comment to see the full error message
   const [transition, setTransition] = useState(Grow);
   const [alertMessage, setAlertMessage] = useState('');
 
-  const handleChange = (e) => {
+  const handleChange = (e: any) => {
     console.log(e.target.value);
     setFormData({
       ...formData,
@@ -46,12 +36,12 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
     // handleCreating()
   };
 
-  const handleSelectedGarden = (gardenID) => {
+  const handleSelectedGarden = (gardenID: any) => {
     console.log(gardenID.name);
     setSelectedGarden(gardenID);
   };
 
-  const handleClick = (transition) => {
+  const handleClick = (transition: any) => {
     setOpen(true);
     setTransition(transition);
   };
@@ -60,7 +50,7 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
     setOpen(false);
   };
 
-  const handleGardenChange = (event) => {
+  const handleGardenChange = (event: any) => {
     setGardenName(event.target.value);
   };
   console.log(selectedGarden);
@@ -69,9 +59,11 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
       <Snackbar
         open={open}
         onClose={handleClose}
+        // @ts-expect-error ts-migrate(2322) FIXME: Type 'Element' is not assignable to type 'JSXEleme... Remove this comment to see the full error message
         TransitionComponent={transition}
         autoHideDuration={2000}
         // message="Item Deleted!"
+        // @ts-expect-error ts-migrate(2339) FIXME: Property 'name' does not exist on type 'Element'.
         key={transition.name}>
         <MuiAlert
           elevation={6}
@@ -99,10 +91,13 @@ const NewTaskForm = ({ handleCreating, handleCreateTask, gardens }) => {
             value={gardenName}
             onChange={handleGardenChange}>
             {/* value={selectedGarden== "" ? selectedGarden.name : ""} */}
-            {gardens.map((garden) => {
+            {gardens.map((garden: any) => {
               // return <MenuItem onClick={() => handleSelectedGarden(garden)}>{garden.name}</MenuItem>
               return (
-                <MenuItem onClick={() => handleSelectedGarden(garden)} value={garden.name}>
+                <MenuItem
+                  key={garden.id}
+                  onClick={() => handleSelectedGarden(garden)}
+                  value={garden.name}>
                   {garden.name}
                 </MenuItem>
               );
