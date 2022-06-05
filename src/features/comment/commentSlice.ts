@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import errorInterface from '../../components/interfaces/error';
+import errorInterface from '../../interfaces/error';
 import commentService from './commentService';
 
 const initialState = {

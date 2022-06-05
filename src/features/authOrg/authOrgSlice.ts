@@ -1,5 +1,5 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import errorInterface from '../../components/interfaces/error';
+import errorInterface from '../../interfaces/error';
 import authOrgService from './authOrgService';
 
 // @ts-expect-error ts-migrate(2345) FIXME: Argument of type 'string | null' is not assignable... Remove this comment to see the full error message
