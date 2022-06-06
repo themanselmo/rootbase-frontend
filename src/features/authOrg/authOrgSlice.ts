@@ -20,9 +20,7 @@ export const registerOrg = createAsyncThunk(
       return await authOrgService.registerOrg(organization);
     } catch (error) {
       const hasErrResponse =
-        (error as errorInterface).response?.data?.message ||
-        (error as errorInterface).message ||
-        (error as errorInterface).toString();
+        (error as errorInterface).response?.data?.errors || (error as errorInterface).toString();
 
       if (!hasErrResponse) {
         throw error;
@@ -37,9 +35,7 @@ export const loginOrg = createAsyncThunk('authOrg/loginOrg', async (organization
     return await authOrgService.loginOrg(organization);
   } catch (error) {
     const hasErrResponse =
-      (error as errorInterface).response?.data?.message ||
-      (error as errorInterface).message ||
-      (error as errorInterface).toString();
+      (error as errorInterface).response?.data?.errors || (error as errorInterface).toString();
 
     if (!hasErrResponse) {
       throw error;

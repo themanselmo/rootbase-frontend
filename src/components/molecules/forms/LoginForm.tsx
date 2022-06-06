@@ -1,32 +1,42 @@
-import React from 'react';
-import { Stack } from '@mui/material';
-import Button from '@mui/material/Button';
-import { Input } from '@mui/material';
+import { LandingForm } from '../styled/LandingForm';
+import theme from '../../../theme';
+import { useSelector } from 'react-redux';
+import { asyncOrganization } from '../../../interfaces/organization';
+import Loader from '../../atoms/icons/Loader';
 
-const LoginForm = ({ handleAuthChange, handleAuthSubmit, handleAuthState }: any) => {
-  // Reset errors on component unmount
+const LoginForm = ({
+  handleAuthChange,
+  handleAuthSubmit
+}: {
+  // eslint-disable-next-line no-unused-vars
+  handleAuthChange: (e: any) => void;
+  // eslint-disable-next-line no-unused-vars
+  handleAuthSubmit: (e: any) => void;
+}) => {
+  const { isLoading } = useSelector(
+    // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
+    (state): asyncOrganization => state.authOrg
+  );
+
   return (
-    <Stack>
-      <Input
+    <LandingForm isLoading={isLoading} theme={theme} autoComplete="off" onSubmit={handleAuthSubmit}>
+      <input
+        autoComplete="off"
         className="input"
         name="name"
         placeholder="Organization Name"
         onChange={handleAuthChange}
       />
-      <Input
+      <input
+        autoComplete="off"
         className="input"
         name="password"
         placeholder="Password"
         type="password"
         onChange={handleAuthChange}
       />
-      <Button color="secondary" onClick={handleAuthSubmit}>
-        Submit
-      </Button>
-      <Button color="secondary" onClick={handleAuthState}>
-        Sign Up
-      </Button>
-    </Stack>
+      <button type="submit">{isLoading ? <Loader width="15px" height="15px" /> : 'Log in'}</button>
+    </LandingForm>
   );
 };
 

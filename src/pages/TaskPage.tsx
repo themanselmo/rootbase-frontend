@@ -11,7 +11,7 @@ import task, { asyncTask } from '../interfaces/task';
 import garden from '../interfaces/garden';
 import { asyncEmployee } from '../interfaces/employee';
 import { asyncOrganization } from '../interfaces/organization';
-import { reduxState } from '../interfaces/reduxState';
+import reduxState from '../interfaces/reduxState';
 
 const TaskPage = () => {
   const dispatch = useDispatch();

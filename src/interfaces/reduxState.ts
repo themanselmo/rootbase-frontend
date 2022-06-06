@@ -4,7 +4,7 @@ import { asyncGarden } from './garden';
 import { asyncOrganization } from './organization';
 import { asyncTask } from './task';
 
-export interface reduxState {
+export default interface reduxState {
   authOrg: asyncOrganization;
   authEmp: asyncEmployee;
   orgEmployees: asyncEmployee;

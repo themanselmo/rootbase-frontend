@@ -3,13 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { loginOrg, registerOrg, resetOrg } from '../features/authOrg/authOrgSlice';
 import DayNightAnimation from '../components/molecules/DayNightAnimation';
-import LoginForm from '../components/molecules/forms/LoginForm';
-import SignUpForm from '../components/molecules/forms/SignUpForm';
+import LandingFormContainer from '../components/organisms/LandingFormContainer';
+import { asyncOrganization } from '../interfaces/organization';
+import styled from 'styled-components';
 
 const LoginPage = () => {
-  const [loggingIn, setLoggingIn] = useState(true);
-
-  const [formData, setFormData] = useState({
+  const [loggingInState, setLoggingInState] = useState<{ loggingIn: boolean }>({ loggingIn: true });
+  const { loggingIn }: { loggingIn: boolean } = loggingInState;
+  const [formData, setFormData] = useState<{ name: string; password: string }>({
     name: '',
     password: ''
   });
@@ -19,9 +20,9 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
 
-  const { organization, isLoading, isError, isSuccess, message } = useSelector(
+  const { organization, isError, isSuccess, message } = useSelector(
     // @ts-expect-error ts-migrate(2571) FIXME: Object is of type 'unknown'.
-    (state) => state.authOrg
+    (state): asyncOrganization => state.authOrg
   );
 
   useEffect(() => {
@@ -34,11 +35,11 @@ const LoginPage = () => {
     return () => {
       dispatch(resetOrg());
     };
-  }, [organization, isSuccess, message, navigate, dispatch]);
+  }, [organization, isSuccess, navigate, dispatch]);
 
-  const [flip, setFlip] = useState(true);
-  const [hidden, setHidden] = useState(true);
-  const [hidden2, setHidden2] = useState(false);
+  const [flip, setFlip] = useState<boolean>(true);
+  const [hidden, setHidden] = useState<boolean>(true);
+  const [hidden2, setHidden2] = useState<boolean>(false);
 
   const DayNightState = {
     flip,
@@ -46,7 +47,7 @@ const LoginPage = () => {
     hidden2
   };
 
-  const seedToTree = () => {
+  const seedToTree = (): void => {
     setFlip((prevState) => !prevState);
     setHidden((prevState) => !prevState);
     setTimeout(() => {
@@ -54,14 +55,14 @@ const LoginPage = () => {
     }, 1000);
   };
 
-  const handleAuthChange = (e: any) => {
+  const handleAuthChange = (e: any): void => {
     setFormData((prevState) => ({
       ...prevState,
       [e.target.name]: e.target.value
     }));
   };
 
-  const handleAuthSubmit = (e: any) => {
+  const handleAuthSubmit = (e: any): void => {
     e.preventDefault();
     const userData = {
       name,
@@ -72,9 +73,13 @@ const LoginPage = () => {
     loggingIn ? dispatch(loginOrg(userData)) : dispatch(registerOrg(userData));
   };
 
-  const handleAuthState = () => {
+  const handleAuthState = (): void => {
     seedToTree();
-    loggingIn ? setLoggingIn(true) : setLoggingIn(false);
+    console.log(loggingIn);
+    setLoggingInState((prevState) => ({
+      ...prevState,
+      loggingIn: !prevState.loggingIn
+    }));
   };
 
   const authProps = {
@@ -83,22 +88,28 @@ const LoginPage = () => {
     handleAuthState,
     loggingIn,
     isError,
-    isLoading
+    message
   };
 
   return (
-    <div id="login-page">
+    <Div>
       <DayNightAnimation {...DayNightState} />
-
-      {/* Controller Organism */}
-      {/* Takes in errors */}
-      {/* Takes in loading */}
-      {/* {isError ? <p>{message}</p> : null} */}
-      {/* Sign up/ Log in button at bottom */}
-
-      {loggingIn ? <LoginForm {...authProps} /> : <SignUpForm {...authProps} />}
-    </div>
+      <LandingFormContainer {...authProps} />
+    </Div>
   );
 };
 
 export default LoginPage;
+
+const Div = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: row;
+  background: #1e2124;
+  height: 100vh;
+  transition: 250ms;
+  @media (max-width: 768px) {
+    flex-direction: column;
+  }
+`;
